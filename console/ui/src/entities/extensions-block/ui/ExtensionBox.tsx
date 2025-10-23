@@ -17,12 +17,13 @@ import { ExtensionBoxProps } from '@entities/extensions-block/model/types.ts';
 import { useFormContext } from 'react-hook-form';
 import { DATABASES_BLOCK_FIELD_NAMES } from '@entities/databases-block/model/const.ts';
 import { useTranslation } from 'react-i18next';
+import { intersection } from 'lodash';
 
 const ExtensionBox: FC<ExtensionBoxProps> = ({ extension, setEnabledExtensions }) => {
   const { t } = useTranslation('clusters');
   const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
   const [selectedDatabases, setSelectedDatabases] = useState<string[]>([]);
-  const [filteredDatabases, setFilteredDatabases] = useState<
+  const [availableDatabases, setAvailableDatabases] = useState<
     {
       [DATABASES_BLOCK_FIELD_NAMES.DATABASE_NAME]: string;
     }[]
@@ -36,17 +37,22 @@ const ExtensionBox: FC<ExtensionBoxProps> = ({ extension, setEnabledExtensions }
   }[];
 
   useEffect(() => {
-    setFilteredDatabases(watchDatabases.filter((database) => database[DATABASES_BLOCK_FIELD_NAMES.DATABASE_NAME]));
+    setAvailableDatabases(watchDatabases.map((_, index) => index + 1)); // display indexes of databases
+    setSelectedDatabases((prev) => intersection(prev, availableDatabases));
   }, [watchDatabases]);
 
   const handleSelectDatabase = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedDatabases(e.target.value as string[]);
     if (e.target.value?.length) {
       setIsChecked(true);
-      setEnabledExtensions((prev) => [...prev, extension]);
+      setEnabledExtensions((prev) => ({ ...prev, [extension.name]: e.target.value }));
     } else {
       setIsChecked(false);
-      setEnabledExtensions((prev) => prev.filter((value) => value.name !== extension.name));
+      setEnabledExtensions((prev) => {
+        const prevCopy = prev;
+        delete prevCopy[extension.name];
+        return prevCopy;
+      });
     }
   };
 
@@ -96,14 +102,10 @@ const ExtensionBox: FC<ExtensionBoxProps> = ({ extension, setEnabledExtensions }
                 label={t('databases')}
                 onChange={handleSelectDatabase}
                 value={selectedDatabases}>
-                {filteredDatabases.map((database, index) => (
-                  <MenuItem
-                    key={database[DATABASES_BLOCK_FIELD_NAMES.DATABASE_NAME] + index}
-                    value={database[DATABASES_BLOCK_FIELD_NAMES.DATABASE_NAME]}>
-                    <Checkbox
-                      checked={selectedDatabases.includes(database[DATABASES_BLOCK_FIELD_NAMES.DATABASE_NAME])}
-                    />
-                    <ListItemText primary={database[DATABASES_BLOCK_FIELD_NAMES.DATABASE_NAME]} />
+                {availableDatabases.map((database, index) => (
+                  <MenuItem key={`database${index}`} value={database}>
+                    <Checkbox checked={selectedDatabases.includes(database)} />
+                    <ListItemText primary={database} />
                   </MenuItem>
                 ))}
               </Select>

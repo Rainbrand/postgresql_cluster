@@ -19,6 +19,7 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
 import './styles.css';
+import { EnabledExtensions } from '@entities/extensions-block/model/types.ts';
 
 const ExtensionsBlock: FC = () => {
   const { t } = useTranslation('clusters');
@@ -26,7 +27,7 @@ const ExtensionsBlock: FC = () => {
   const [searchValue, setSearchValue] = useState('');
   const [isShowOnlyEnabled, setIsShowOnlyEnabled] = useState(false);
   const [filteredExtensions, setFilteredExtensions] = useState<ResponseDatabaseExtension[]>([]);
-  const [enabledExtensions, setEnabledExtensions] = useState<ResponseDatabaseExtension[]>([]);
+  const [enabledExtensions, setEnabledExtensions] = useState<EnabledExtensions>({});
 
   const { watch, setValue } = useFormContext();
 
