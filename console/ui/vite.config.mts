@@ -28,4 +28,12 @@ export default defineConfig({
       '@shared': resolve(__dirname, './src/shared'),
     },
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    reporters: ['default', 'html'],
+    coverage: {
+      provider: 'v8',
+    },
+  },
 });
