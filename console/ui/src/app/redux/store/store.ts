@@ -1,4 +1,4 @@
-import { Action, configureStore, isRejectedWithValue, Middleware, ThunkAction } from '@reduxjs/toolkit';
+import { Action, combineSlices, configureStore, isRejectedWithValue, Middleware, ThunkAction } from '@reduxjs/toolkit';
 import { operationsApi } from '@shared/api/api/operations';
 import { clustersApi } from '@shared/api/api/clusters.ts';
 import { environmentsApi } from '@shared/api/api/environments.ts';
@@ -22,18 +22,10 @@ export const rtkQueryErrorLogger: Middleware = () => (next) => (action) => {
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = {
-  [baseApi.reducerPath]: baseApi.reducer,
-  [clustersApi.reducerPath]: clustersApi.reducer,
-  [environmentsApi.reducerPath]: environmentsApi.reducer,
-  [operationsApi.reducerPath]: operationsApi.reducer,
-  [projectsApi.reducerPath]: projectsApi.reducer,
-  [secretsApi.reducerPath]: secretsApi.reducer,
-  [settingsApi.reducerPath]: settingsApi.reducer,
-  [otherApi.reducerPath]: otherApi.reducer,
+const rootReducer = combineSlices(baseApi, {
   project: projectSlice.reducer,
   theme: themeSlice.reducer,
-};
+});
 
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
@@ -52,9 +44,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         settingsApi.middleware,
         otherApi.middleware,
       ];
-      const uniqueApiMiddlewares = apiMiddlewares.filter(
-        (mw, idx, arr) => arr.indexOf(mw) === idx,
-      );
+      const uniqueApiMiddlewares = apiMiddlewares.filter((mw, idx, arr) => arr.indexOf(mw) === idx);
       return getDefaultMiddleware().concat(uniqueApiMiddlewares, rtkQueryErrorLogger);
     },
     preloadedState,
