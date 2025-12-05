@@ -11,7 +11,7 @@ const Breadcrumbs: FC = () => {
   const breadcrumbs = useBreadcrumbs();
   const theme = useTheme();
 
-  return (
+  return breadcrumbs?.length ? (
     <MaterialBreadcrumbs>
       <Link
         style={{ textDecoration: 'none', color: theme.palette.text.primary }}
@@ -30,7 +30,7 @@ const Breadcrumbs: FC = () => {
         ),
       )}
     </MaterialBreadcrumbs>
-  );
+  ) : null;
 };
 
 export default Breadcrumbs;

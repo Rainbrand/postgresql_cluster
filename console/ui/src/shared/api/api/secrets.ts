@@ -25,7 +25,7 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     patchSecretsById: build.mutation<PatchSecretsByIdApiResponse, PatchSecretsByIdApiArg>({
       query: (queryArg) => ({ url: `/secrets/${queryArg.id}`, method: 'PATCH', body: queryArg.requestSecretPatch }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Secrets', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Secrets', id }],
     }),
     deleteSecretsById: build.mutation<DeleteSecretsByIdApiResponse, DeleteSecretsByIdApiArg>({
       query: (queryArg) => ({ url: `/secrets/${queryArg.id}`, method: 'DELETE' }),

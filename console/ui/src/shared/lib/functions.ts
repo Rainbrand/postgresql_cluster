@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { format } from 'date-fns/format';
 import { isValid } from 'date-fns/isValid';
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 declare const window: any;
 
 /**
@@ -10,7 +11,7 @@ declare const window: any;
  * @param path - Absolute URN path.
  * @param params - Additional params that will be substituted in URN dynamic values.
  */
-export const generateAbsoluteRouterPath = (path: string, params?: Record<any, any>) =>
+export const generateAbsoluteRouterPath = (path: string, params?: Record<string, unknown>) =>
   resolvePath(generatePath(path, params));
 
 /**
@@ -23,7 +24,8 @@ export const getEnvVariable = (variableName: string) => window?._env_?.[variable
  * Function manages error event when performing request.
  * @param e - Error event.
  */
-export const handleRequestErrorCatch = (e) => {
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export const handleRequestErrorCatch = (e: any) => {
   console.error(e);
   toast.error(e);
 };
@@ -33,11 +35,7 @@ export const handleRequestErrorCatch = (e) => {
  * @param timestamp - Timestamp to be converted.
  */
 export const convertTimestampToReadableTime = (timestamp?: string) =>
-  isValid(new Date(timestamp)) ? format(timestamp, 'MMM dd, yyyy, HH:mm:ss') : '-';
+  timestamp && isValid(timestamp) ? format(timestamp, 'MMM dd, yyyy, HH:mm:ss') : '-';
 
-export const manageSortingOrder = (
-  sorting: {
-    desc?: boolean;
-    id?: string;
-  }[],
-) => (sorting?.desc ? `-${sorting?.id}` : sorting?.id);
+export const manageSortingOrder = (sorting: { desc?: boolean; id?: string }) =>
+  sorting?.desc ? `-${sorting?.id}` : sorting?.id;

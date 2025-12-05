@@ -2,12 +2,13 @@ import { ADD_ENTITY_FORM_NAMES } from '@shared/ui/settings-add-entity/model/cons
 
 export interface AddEntityFormValues {
   [ADD_ENTITY_FORM_NAMES.NAME]: string;
-  [ADD_ENTITY_FORM_NAMES.NAME]: string;
+  [ADD_ENTITY_FORM_NAMES.DESCRIPTION]: string;
 }
 
 export interface SettingsAddEntityProps {
-  buttonLabel: string;
-  submitButtonLabel: string;
+  buttonLabel?: string;
+  headerLabel?: string;
+  submitButtonLabel?: string;
   isLoading?: boolean;
   submitTrigger: (values: AddEntityFormValues) => void;
 }

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-
 import { baseApi as api } from '../baseApi.ts';
 
 const injectedRtkApi = api.injectEndpoints({
@@ -28,7 +26,7 @@ const injectedRtkApi = api.injectEndpoints({
       }),
       providesTags: (result) =>
         result?.data
-          ? [...result.data.map(({ id }) => ({ type: 'Clusters', id })), { type: 'Clusters', id: 'LIST' }]
+          ? [...result.data.map(({ id }) => ({ type: 'Clusters', id }) as const), { type: 'Clusters', id: 'LIST' }]
           : [{ type: 'Clusters', id: 'LIST' }],
     }),
     getClustersDefaultName: build.query<GetClustersDefaultNameApiResponse, GetClustersDefaultNameApiArg>({
@@ -37,7 +35,7 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     getClustersById: build.query<GetClustersByIdApiResponse, GetClustersByIdApiArg>({
       query: (queryArg) => ({ url: `/clusters/${queryArg.id}` }),
-      providesTags: (result, error, { id }) => [{ type: 'Clusters', id }],
+      providesTags: (_result, _error, { id }) => [{ type: 'Clusters', id }],
     }),
     deleteClustersById: build.mutation<DeleteClustersByIdApiResponse, DeleteClustersByIdApiArg>({
       query: (queryArg) => ({ url: `/clusters/${queryArg.id}`, method: 'DELETE' }),
@@ -45,7 +43,7 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     postClustersByIdRefresh: build.mutation<PostClustersByIdRefreshApiResponse, PostClustersByIdRefreshApiArg>({
       query: (queryArg) => ({ url: `/clusters/${queryArg.id}/refresh`, method: 'POST' }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Clusters', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Clusters', id }],
     }),
     postClustersByIdReinit: build.mutation<PostClustersByIdReinitApiResponse, PostClustersByIdReinitApiArg>({
       query: (queryArg) => ({
@@ -53,7 +51,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'POST',
         body: queryArg.requestClusterReinit,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Clusters', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Clusters', id }],
     }),
     postClustersByIdReload: build.mutation<PostClustersByIdReloadApiResponse, PostClustersByIdReloadApiArg>({
       query: (queryArg) => ({
@@ -61,7 +59,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'POST',
         body: queryArg.requestClusterReload,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Clusters', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Clusters', id }],
     }),
     postClustersByIdRestart: build.mutation<PostClustersByIdRestartApiResponse, PostClustersByIdRestartApiArg>({
       query: (queryArg) => ({
@@ -69,7 +67,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'POST',
         body: queryArg.requestClusterRestart,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Clusters', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Clusters', id }],
     }),
     postClustersByIdStop: build.mutation<PostClustersByIdStopApiResponse, PostClustersByIdStopApiArg>({
       query: (queryArg) => ({
@@ -77,7 +75,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'POST',
         body: queryArg.requestClusterStop,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Clusters', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Clusters', id }],
     }),
     postClustersByIdStart: build.mutation<PostClustersByIdStartApiResponse, PostClustersByIdStartApiArg>({
       query: (queryArg) => ({
@@ -85,7 +83,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'POST',
         body: queryArg.requestClusterStart,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Clusters', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Clusters', id }],
     }),
     postClustersByIdRemove: build.mutation<PostClustersByIdRemoveApiResponse, PostClustersByIdRemoveApiArg>({
       query: (queryArg) => ({

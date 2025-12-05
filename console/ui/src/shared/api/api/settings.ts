@@ -13,7 +13,15 @@ const injectedRtkApi = api.injectEndpoints({
       }),
       providesTags: (result) =>
         result?.data
-          ? [...result.data.map(({ id }) => ({ type: 'Settings', id }) as const), { type: 'Settings', id: 'LIST' }]
+          ? [
+              // using 'name' field instead of 'id' because settings are patched by name
+              // and cannot be invalidated by id because of patch request arguments
+              ...result.data.map(({ name }) => ({ type: 'Settings', id: name }) as const),
+              {
+                type: 'Settings',
+                id: 'LIST',
+              },
+            ]
           : [{ type: 'Settings', id: 'LIST' }],
     }),
     patchSettingsByName: build.mutation<PatchSettingsByNameApiResponse, PatchSettingsByNameApiArg>({
@@ -22,7 +30,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: 'PATCH',
         body: queryArg.requestChangeSetting,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Settings', id }],
+      invalidatesTags: (_result, _error, { name }) => [{ type: 'Settings', id: name }],
     }),
   }),
   overrideExisting: false,

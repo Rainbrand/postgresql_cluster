@@ -1,4 +1,5 @@
 import { baseApi as api } from '../baseApi.ts';
+import { GetOperationsByIdLogApiCustomResponse } from '@shared/api/types';
 
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -22,13 +23,13 @@ const injectedRtkApi = api.injectEndpoints({
           ? [...result.data.map(({ id }) => ({ type: 'Operations', id }) as const), { type: 'Operations', id: 'LIST' }]
           : [{ type: 'Operations', id: 'LIST' }],
     }),
-    getOperationsByIdLog: build.query<GetOperationsByIdLogApiResponse, GetOperationsByIdLogApiArg>({
+    getOperationsByIdLog: build.query<GetOperationsByIdLogApiCustomResponse, GetOperationsByIdLogApiArg>({
       query: (queryArg) => ({ url: `/operations/${queryArg.id}/log` }),
       transformResponse: (response, meta) => ({
         log: response,
-        isComplete: meta.response.headers.get('x-log-completed')?.toString() === 'true',
+        isComplete: meta?.response?.headers.get('x-log-completed')?.toString() === 'true',
       }),
-      providesTags: (result, error, { id }) => [{ type: 'Operations', id }],
+      providesTags: (_result, _error, { id }) => [{ type: 'Operations', id }],
     }),
   }),
   overrideExisting: false,

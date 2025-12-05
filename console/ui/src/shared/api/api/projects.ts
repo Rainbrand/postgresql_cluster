@@ -15,7 +15,7 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     patchProjectsById: build.mutation<PatchProjectsByIdApiResponse, PatchProjectsByIdApiArg>({
       query: (queryArg) => ({ url: `/projects/${queryArg.id}`, method: 'PATCH', body: queryArg.requestProjectPatch }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Projects', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Projects', id }],
     }),
     deleteProjectsById: build.mutation<DeleteProjectsByIdApiResponse, DeleteProjectsByIdApiArg>({
       query: (queryArg) => ({ url: `/projects/${queryArg.id}`, method: 'DELETE' }),
