@@ -6,7 +6,13 @@ export interface SecretFormBlockProps {
   isAdditionalInfoDisplayed?: boolean;
 }
 
-export interface SecretFormValues {
+export interface LocalSecretFormValues {
+  [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.SSH_PRIVATE_KEY]?: string;
+  [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.USERNAME]?: string;
+  [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.PASSWORD]?: string;
+}
+
+export interface CloudSecretFormValues {
   [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.SECRET_TYPE]: string;
   [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.SECRET_NAME]: string;
   [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.AWS_ACCESS_KEY_ID]?: string;
@@ -18,10 +24,9 @@ export interface SecretFormValues {
   [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.AZURE_SECRET]?: string;
   [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.AZURE_TENANT]?: string;
   [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.HCLOUD_API_TOKEN]?: string;
-  [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.SSH_PRIVATE_KEY]?: string;
-  [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.USERNAME]?: string;
-  [SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.PASSWORD]?: string;
 }
+
+export interface SecretFormValues extends CloudSecretFormValues, LocalSecretFormValues {}
 
 export interface SecretModalContentProps {
   secretType: string;

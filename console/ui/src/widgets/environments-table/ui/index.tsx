@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PAGINATION_LIMIT_OPTIONS } from '@shared/config/constants.ts';
 import { MRT_ColumnDef, MRT_RowData, MRT_TableOptions } from 'material-react-table';

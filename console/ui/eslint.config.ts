@@ -29,5 +29,5 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   reactHooks.configs.flat['recommended-latest'],
-  globalIgnores(['**/dist']),
+  globalIgnores(['**/dist', '**/html']),
 ]);

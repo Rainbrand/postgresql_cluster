@@ -1,9 +1,8 @@
 import { ReactElement } from 'react';
-import { Mark } from '@mui/material/Slider/useSlider.types';
 
 export interface SliderBoxProps {
   amount: number;
-  changeAmount: (...event: any[]) => void;
+  changeAmount: (amount: number) => void;
   icon?: ReactElement;
   unit?: string;
   min: number;
@@ -18,7 +17,12 @@ export interface SliderBoxProps {
   topRightElements?: ReactElement | null;
 }
 
-export type GenerateMarkType = (value: number, marksAdditionalLabel: string) => { label: string; value: number };
+export interface Mark {
+  label: string | number;
+  value: string | number;
+}
+
+export type GenerateMarkType = (value: number, marksAdditionalLabel: string) => Mark;
 
 export type GenerateSliderMarksType = (
   min: number,

@@ -53,7 +53,7 @@ const ClusterSliderBox: FC<SliderBoxProps> = ({
           value={amount}
           onChange={onChange}
           error={!!error}
-          helperText={(error as any)?.message ?? ''}
+          helperText={error?.message ?? ''}
           size="small"
           sx={{ width: '75px' }}
         />

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProjectSliceState {
-  currentProject: string | null;
+  currentProject: string;
 }
 
 const initialState: ProjectSliceState = {

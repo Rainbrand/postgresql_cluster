@@ -20,7 +20,7 @@ const ClusterFormProvidersBlock: FC<ProvidersBlockProps> = ({ providers }) => {
 
   const nameIconProvidersMap = useNameIconProvidersMap();
 
-  const handleProviderChange = (value: any) => () => {
+  const handleProviderChange = (value) => () => {
     reset((values) => ({
       ...values,
       [CLUSTER_FORM_FIELD_NAMES.PROVIDER]: value,
@@ -29,9 +29,9 @@ const ClusterFormProvidersBlock: FC<ProvidersBlockProps> = ({ providers }) => {
       [INSTANCES_BLOCK_FIELD_NAMES.INSTANCE_TYPE]: 'small',
       [CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG]: value?.instance_types?.small?.[0],
       [STORAGE_BLOCK_FIELDS.STORAGE_AMOUNT]:
-        (value as any)?.volumes?.find((volume: any) => volume?.is_default)?.min_size < 100
+        value?.volumes?.find((volume) => volume?.is_default)?.min_size < 100 
           ? 100
-          : (value as any)?.volumes?.find((volume: any) => volume?.is_default)?.min_size,
+          : value?.volumes?.find((volume) => volume?.is_default)?.min_size,
       [BACKUPS_BLOCK_FIELD_NAMES.IS_BACKUPS_ENABLED]: value.code !== PROVIDERS.LOCAL,
     }));
   };

@@ -110,7 +110,6 @@ const AuthenticationMethodFormBlock: React.FC = () => {
                   size="small"
                   error={!!errors[CLUSTER_FORM_FIELD_NAMES.IS_USE_DEFINED_SECRET]}
                   helperText={errors[CLUSTER_FORM_FIELD_NAMES.IS_USE_DEFINED_SECRET]?.message as string}>
-                  {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                   {[t('yes', { ns: 'shared' }), t('no', { ns: 'shared' })].map((option) => (
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -154,7 +153,7 @@ const AuthenticationMethodFormBlock: React.FC = () => {
                       size="small"
                       error={!!errors[CLUSTER_FORM_FIELD_NAMES.SECRET_ID]}
                       helperText={errors[CLUSTER_FORM_FIELD_NAMES.SECRET_ID]?.message as string}>
-                      {secrets.data?.data?.map((secret: any) => (
+                      {secrets.data?.data?.map((secret) => (
                         <MenuItem key={secret?.id} value={secret?.id}>
                           {secret?.name}
                         </MenuItem>

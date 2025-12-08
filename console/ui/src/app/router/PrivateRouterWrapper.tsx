@@ -8,11 +8,12 @@ import { AUTH_TOKEN } from '@shared/config/constants.ts';
 const PrivateRouteWrapper: FC = () => {
   const { t } = useTranslation('toasts');
   const location = useLocation();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && token !== AUTH_TOKEN) toast.error(t('invalidToken'));
-  }, [localStorage.getItem('token')]);
+  }, [t, token]);
 
   return localStorage.getItem('token') === AUTH_TOKEN ? (
     <Outlet />

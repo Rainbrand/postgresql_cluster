@@ -22,6 +22,22 @@ import { IS_EXPERT_MODE, IS_YAML_ENABLED } from '@shared/model/constants.ts';
 import YamlEditorForm from '@widgets/yaml-editor-form/ui';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
+/**
+ * AddCluster is the main page component used for creating and configuring a new cluster.
+ * It manages form state, data fetching for dependencies (deployments, environments, Postgres versions, etc.),
+ * and handles default form value initialization based on fetched data.
+ * The component supports both Standard and YAML Expert modes for cluster definition.
+ *
+ * Renders:
+ * - Cluster form with all fields for creating a cluster
+ * - Optional YAML editor for Expert mode
+ * - Cluster summary sidebar with real-time preview
+ * - Loading spinners and data fetching states
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
+
 const AddCluster: FC = () => {
   const { t } = useTranslation(['clusters', 'validation', 'toasts']);
   const [isResetting, setIsResetting] = useState(false);
@@ -42,10 +58,9 @@ const AddCluster: FC = () => {
   useEffect(() => {
     if (deployments.data?.data && postgresVersions.data?.data && environments.data?.data && clusterName.data) {
       setIsResetting(true);
-      // eslint-disable-next-line @typescript-eslint/require-await
       const resetForm = async () => {
         // sync function will result in form values setting error
-        const providers = deployments.data?.data;
+        const providers = deployments.data.data;
         methods.reset((values) => ({
           ...values,
           [CLUSTER_FORM_FIELD_NAMES.PROVIDER]: providers?.[0],
@@ -66,11 +81,9 @@ const AddCluster: FC = () => {
       };
       void resetForm().then(() => setIsResetting(false));
     }
-  }, [deployments.data?.data, postgresVersions.data?.data, environments.data?.data, clusterName.data]);
+  }, [deployments.data?.data, postgresVersions.data?.data, environments.data?.data, clusterName.data, methods]);
 
-  const handleTabChange = (onChange: (...event: any[]) => void) => (_, value: string) => {
-    onChange(value);
-  };
+  const handleTabChange = (onChange: (event: unknown) => void) => (_: unknown, value: string) => onChange(value);
 
   const clustersForm = (
     <Stack direction="row">
@@ -85,11 +98,13 @@ const AddCluster: FC = () => {
     </Stack>
   );
 
+  if (isResetting || deployments.isFetching || postgresVersions.isFetching || environments.isFetching) {
+    return <Spinner />;
+  }
+
   return (
     <FormProvider {...methods}>
-      {isResetting || deployments.isFetching || postgresVersions.isFetching || environments.isFetching ? (
-        <Spinner />
-      ) : IS_EXPERT_MODE && IS_YAML_ENABLED ? (
+      {IS_EXPERT_MODE && IS_YAML_ENABLED ? (
         <TabContext value={watchClusterCreationType}>
           <Controller
             name={CLUSTER_FORM_FIELD_NAMES.CREATION_TYPE}
@@ -102,10 +117,14 @@ const AddCluster: FC = () => {
             )}
           />
           <Divider />
-          <TabPanel value={CLUSTER_CREATION_TYPES.FORM}>{clustersForm}</TabPanel>
-          <TabPanel value={CLUSTER_CREATION_TYPES.YAML}>
-            <YamlEditorForm />
-          </TabPanel>
+          {[
+            { value: CLUSTER_CREATION_TYPES.FORM, content: clustersForm },
+            { value: CLUSTER_CREATION_TYPES.YAML, content: <YamlEditorForm /> },
+          ].map(({ value, content }) => (
+            <TabPanel key={value} value={value}>
+              {content}
+            </TabPanel>
+          ))}
         </TabContext>
       ) : (
         clustersForm

@@ -22,7 +22,7 @@ import ClusterSecretModal from '@features/cluster-secret-modal';
 import { toast } from 'react-toastify';
 import { IS_EXPERT_MODE } from '@shared/model/constants.ts';
 import { ClusterFormValues } from '@features/cluster-secret-modal/model/types.ts';
-import { useGetSecretsQuery, usePostSecretsMutation } from '@shared/api/api/secrets.ts';
+import { ResponseSecretInfo, useGetSecretsQuery, usePostSecretsMutation } from '@shared/api/api/secrets.ts';
 import { getSecretBodyFromValues } from '@entities/secret-form-block/lib/functions.ts';
 import { SECRET_MODAL_CONTENT_FORM_FIELD_NAMES } from '@entities/secret-form-block/model/constants.ts';
 import { ClusterFormProps } from '@widgets/cluster-form/model/types.ts';
@@ -45,18 +45,18 @@ const ClusterForm: React.FC<ClusterFormProps> = ({
 }) => {
   const { t } = useTranslation(['clusters', 'validation', 'toasts']);
   const navigate = useNavigate();
-  const createSecretResultRef = useRef(null); // ref is used for case when user saves secret and uses its ID to create cluster
+  const createSecretResultRef = useRef<ResponseSecretInfo>(null); // ref is used for case when user saves secret and uses its ID to create cluster
 
   const currentProject = useAppSelector(selectCurrentProject);
 
   const [addSecretTrigger, addSecretTriggerState] = usePostSecretsMutation();
   const [addClusterTrigger, addClusterTriggerState] = usePostClustersMutation();
 
-  const methods = useFormContext();
+  const { formState, handleSubmit } = useFormContext();
 
   const watchProvider = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.PROVIDER });
 
-  const secrets = useGetSecretsQuery({ type: watchProvider?.code, projectId: currentProject });
+  const secrets = useGetSecretsQuery({ type: watchProvider?.code, projectId: Number(currentProject) });
 
   const submitLocalCluster = async (values: ClusterFormValues) => {
     if (values[CLUSTER_FORM_FIELD_NAMES.AUTHENTICATION_IS_SAVE_TO_CONSOLE] && !createSecretResultRef?.current) {
@@ -120,7 +120,7 @@ const ClusterForm: React.FC<ClusterFormProps> = ({
 
   const cancelHandler = () => navigate(generateAbsoluteRouterPath(RouterPaths.clusters.absolutePath));
 
-  const { isValid, isSubmitting } = methods.formState; // spreading is required by React Hook Form to ensure the correct form state
+  const { isValid, isSubmitting } = formState; // spreading is required by React Hook Form to ensure the correct form state
 
   return (
     <Stack direction="column" gap={2} padding="8px">
@@ -128,7 +128,8 @@ const ClusterForm: React.FC<ClusterFormProps> = ({
         onSubmit={
           watchProvider?.code !== PROVIDERS.LOCAL && secrets?.data?.data?.length !== 1
             ? undefined
-            : methods.handleSubmit(onSubmit)
+            : // eslint-disable-next-line react-hooks/refs
+              handleSubmit(onSubmit)
         }>
         <Stack direction="column" gap={2}>
           <ClusterFormProvidersBlock providers={deploymentsData} />

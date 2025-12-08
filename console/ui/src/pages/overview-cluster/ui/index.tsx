@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useGetClustersByIdQuery } from '@shared/api/api/clusters.ts';
 import { Grid } from '@mui/material';
@@ -11,7 +10,6 @@ import { CLUSTER_OVERVIEW_POLLING_INTERVAL } from '@shared/config/constants.ts';
 import Spinner from '@shared/ui/spinner';
 
 const OverviewCluster: FC = () => {
-  const { t } = useTranslation('clusters');
   const { clusterId } = useParams();
 
   const cluster = useQueryPolling(() => useGetClustersByIdQuery({ id: clusterId }), CLUSTER_OVERVIEW_POLLING_INTERVAL);
