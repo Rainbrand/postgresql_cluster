@@ -12,7 +12,7 @@ import {
   CLUSTER_FORM_FIELD_NAMES,
 } from '@widgets/cluster-form/model/constants.ts';
 import { useTranslation } from 'react-i18next';
-import { useGetExternalDeploymentsQuery } from '@shared/api/api/deployments.ts';
+import { ResponseDeploymentInfo, useGetExternalDeploymentsQuery } from '@shared/api/api/deployments.ts';
 import { useGetEnvironmentsQuery } from '@shared/api/api/environments.ts';
 import { useGetPostgresVersionsQuery } from '@shared/api/api/other.ts';
 import { useGetClustersDefaultNameQuery } from '@shared/api/api/clusters.ts';
@@ -56,19 +56,24 @@ const AddCluster: FC = () => {
   const watchClusterCreationType = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.CREATION_TYPE, control: methods.control });
 
   useEffect(() => {
-    if (deployments.data?.data && postgresVersions.data?.data && environments.data?.data && clusterName.data) {
+    if (
+      deployments.data?.data?.length &&
+      postgresVersions.data?.data?.length &&
+      environments.data?.data?.length &&
+      clusterName.data
+    ) {
       setIsResetting(true);
       const resetForm = async () => {
         // sync function will result in form values setting error
-        const providers = deployments.data.data;
+        const providers = deployments.data!.data as ResponseDeploymentInfo[];
         methods.reset((values) => ({
           ...values,
-          [CLUSTER_FORM_FIELD_NAMES.PROVIDER]: providers?.[0],
-          [CLUSTER_FORM_FIELD_NAMES.REGION]: providers?.[0]?.cloud_regions?.[0]?.code,
-          [CLUSTER_FORM_FIELD_NAMES.REGION_CONFIG]: providers?.[0]?.cloud_regions?.[0]?.datacenters?.[0],
-          [CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG]: providers?.[0]?.instance_types?.small?.[0],
-          [CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION]: postgresVersions.data?.data?.at(-1)?.major_version,
-          [CLUSTER_FORM_FIELD_NAMES.ENVIRONMENT_ID]: environments.data?.data?.[0]?.id,
+          [CLUSTER_FORM_FIELD_NAMES.PROVIDER]: providers[0],
+          [CLUSTER_FORM_FIELD_NAMES.REGION]: providers[0]?.cloud_regions?.[0]?.code,
+          [CLUSTER_FORM_FIELD_NAMES.REGION_CONFIG]: providers[0]?.cloud_regions?.[0]?.datacenters?.[0],
+          [CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG]: providers[0]?.instance_types?.small?.[0],
+          [CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION]: postgresVersions.data?.data?.at(-1)?.major_version ?? 18,  // fallback to 18 if no versions are available
+          [CLUSTER_FORM_FIELD_NAMES.ENVIRONMENT_ID]: environments.data?.data?.[0]?.id ?? 0,  // fallback to 0 if no environments are available
           [CLUSTER_FORM_FIELD_NAMES.CLUSTER_NAME]: clusterName.data?.name ?? 'postgres-cluster',
           ...(IS_EXPERT_MODE
             ? {
@@ -81,7 +86,7 @@ const AddCluster: FC = () => {
       };
       void resetForm().then(() => setIsResetting(false));
     }
-  }, [deployments.data?.data, postgresVersions.data?.data, environments.data?.data, clusterName.data, methods]);
+  }, [deployments.data, postgresVersions.data, environments.data, clusterName.data, methods]);
 
   const handleTabChange = (onChange: (event: unknown) => void) => (_: unknown, value: string) => onChange(value);
 
