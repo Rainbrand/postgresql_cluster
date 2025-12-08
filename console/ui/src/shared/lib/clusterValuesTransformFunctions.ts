@@ -27,23 +27,35 @@ import { RequestClusterCreate } from '@shared/api/api/clusters.ts';
 import { isEmpty } from 'lodash';
 
 /**
- * Get value from model form (postgres or kernel params) and convert to correct format.
- * @param value - Form value.
+ * Converts a multiline string of parameters into an array of objects with `option` and `value` keys.
+ *
+ * Each line in the input string should contain a parameter in the format "option:value" or "option=value".
+ * Lines are split by newline characters, and then each line is split at either ':' or '='.
+ * Leading and trailing whitespaces for both `option` and `value` are trimmed.
+ *
+ * @param value - The multiline string representing the parameters.
+ * @returns An array of objects with `option` and `value`, or the original value if empty.
  */
 export const convertModalParametersToArray = (value?: string) =>
   value?.length
     ? value.split(/[\n\r]/).map((item) => {
         const values = item.split(/[:=]/);
         return {
-          option: values?.[0].trim(), // due to splitting rule, values might have unnecessary whitespaces that needs to be removed
+          option: values?.[0].trim(),
           value: values?.[1].trim(),
         };
       })
     : value;
 
 /**
- * Functions creates an object with shared cluster envs that should be put in 'extra_vars' request field.
- * @param values - Filled form values.
+ * Generates an object containing common extra variables required for cluster creation.
+ *
+ * This function extracts the PostgreSQL version and Patroni cluster name
+ * from the provided form values to be used as shared environment variables
+ * (extra_vars) in cluster creation requests.
+ *
+ * @param values - The form values containing cluster configuration.
+ * @returns An object with common extra vars.
  */
 export const getCommonExtraVars = (values: ClusterFormValues) => ({
   postgresql_version: values[CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION],
@@ -51,8 +63,35 @@ export const getCommonExtraVars = (values: ClusterFormValues) => ({
 });
 
 /**
- * Functions creates an object with envs exclusive to cloud clusters that should be put in 'extra_vars' request field.
- * @param values - Filled form values.
+ * Generates cloud-specific extra variables for the cluster creation request.
+ *
+ * This function builds an object containing cloud provider related parameters
+ * to be sent in the `extra_vars` field of the cluster creation request.
+ * It supports both standard and expert modes, and may include fields such as
+ * server type, location, instance amount, volume size/type, SSH keys, load balancer flags, and more,
+ * depending on user input and form values.
+ *
+ * @param values - The filled form values from the cluster creation form.
+ * @returns Object containing the extra variables for a cloud provider cluster.
+ *
+ * The returned object may contain the following keys:
+ *   - postgresql_version: Major version of PostgreSQL selected.
+ *   - patroni_cluster_name: The name of the cluster.
+ *   - cloud_provider: The code of the selected cloud provider.
+ *   - server_type: Type of server instance (custom or pre-defined).
+ *   - server_location: Code of the region/datacenter where the cluster will be deployed.
+ *   - server_count: Number of server instances to create.
+ *   - volume_size: Persistent volume size.
+ *   - ansible_user: Default Ansible user for provider.
+ *   - ssh_public_keys: (optional) Array of SSH public keys formatted for Ansible.
+ *   - (Cloud image fields): Flattened from selected cloud image (if present).
+ * If expert mode is enabled, this may also include:
+ *   - postgresql_data_dir_mount_fstype: File system type for PGDATA directory mount.
+ *   - volume_type: Storage backend type.
+ *   - database_public_access: Whether the DB will have a public connection.
+ *   - cloud_load_balancer: Whether a cloud load balancer will be used.
+ *   - server_spot: Will be true if using AWS/GCP/Azure with spot/preemptible instances enabled.
+ *   - server_network: (optional) Provided if custom network is defined.
  */
 export const getCloudProviderExtraVars = (values: ClusterFormValues) => ({
   ...getCommonExtraVars(values),
@@ -89,9 +128,20 @@ export const getCloudProviderExtraVars = (values: ClusterFormValues) => ({
 });
 
 /**
- * Functions creates an object with envs exclusive to local clusters that should be put in 'extra_vars' request field.
- * @param values - Filled form values.
+ * Creates an object with environment variables (extra_vars) exclusive to local machine clusters
+ * for use in the cluster creation request.
+ *
+ * This function merges generic cluster variables as well as special local machine fields:
+ * - Sets cluster virtual IP if provided.
+ * - Enables HAProxy-based load balancing if selected.
+ * - Marks an existing cluster if flagged.
+ * - Adds ansible user and password if using password authentication (with no saved secret).
+ * - Adds DCS configuration details and Postgres data directory when in expert mode.
+ * - If not deploying a new DCS cluster, includes DCS connection data for etcd or consul.
+ *
+ * @param values - The filled form values from the cluster creation form.
  * @param secretId - Optional ID of secret if exists.
+ * @returns The extra_vars object tailored for local machine cluster creation.
  */
 export const getLocalMachineExtraVars = (values: ClusterFormValues, secretId?: number) => ({
   ...getCommonExtraVars(values),
@@ -135,11 +185,14 @@ export const getLocalMachineExtraVars = (values: ClusterFormValues, secretId?: n
 });
 
 /**
- * Function maps a field array into correct request format for DCS config.
+ * Function maps server (either database or DCS) entries from form values into a key-value object
+ * suitable for requests (e.g., Ansible inventory hosts).
+ *
  * @param values - Filled form values.
  * @param role - Optional role for Consul instances.
- * @param shouldAddHostname - An optional flag determines if field 'hostname' should be added. True by default.
+ * @param shouldAddHostname - An optional flag determines if field 'hostname' should be added. False by default.
  * @param isDbServers - An optional flag determines which db servers are mapping - Database servers or DCS. True by default.
+ * @returns Object with host address keys and configuration objects as values.
  */
 const configureHosts = ({
   values,
@@ -179,12 +232,20 @@ const configureHosts = ({
 };
 
 /**
- * Function maps DCS fields into the correct request format.
- * @param values - Filled form values.
+ * Constructs the DCS (Distributed Configuration Store) environment object
+ * for the cluster creation request based on the provided form values.
+ *
+ * Handles both expert and non-expert modes for DCS options (ETCD, CONSUL)
+ * and adapts the structure depending on whether a new DCS cluster is being deployed,
+ * what the DCS type is, and whether hosts should be configured as database servers or external.
+ *
+ * @param values - The filled cluster form values.
+ * @returns An object with the correct DCS request payload, or undefined if not applicable.
  */
 const constructDcsEnvs = (values: ClusterFormValues) => {
   if (values[DCS_BLOCK_FIELD_NAMES.IS_DEPLOY_NEW_CLUSTER]) {
     if (!IS_EXPERT_MODE) {
+      // Non-expert mode, only ETCD with database servers
       return {
         etcd_cluster: {
           hosts: configureHosts({ values }),
@@ -193,8 +254,10 @@ const constructDcsEnvs = (values: ClusterFormValues) => {
       };
     }
     if (IS_EXPERT_MODE) {
+      // Expert mode, support both ETCD and CONSUL
       switch (values[DCS_BLOCK_FIELD_NAMES.TYPE]) {
         case DCS_TYPES.ETCD:
+          // ETCD as DCS, may deploy to db servers or external
           return {
             etcd_cluster: {
               hosts: configureHosts({
@@ -206,6 +269,7 @@ const constructDcsEnvs = (values: ClusterFormValues) => {
             consul_instances: { hosts: {} },
           };
         case DCS_TYPES.CONSUL:
+          // CONSUL as DCS, can configure client/server hosts
           return {
             etcd_cluster: {
               hosts: {},
@@ -215,11 +279,17 @@ const constructDcsEnvs = (values: ClusterFormValues) => {
                 ? configureHosts({ values, role: 'server' })
                 : {
                     ...configureHosts({ values, role: 'client' }),
-                    ...configureHosts({ values, role: 'server', isDbServers: false, shouldAddHostname: true }),
+                    ...configureHosts({
+                      values,
+                      role: 'server',
+                      isDbServers: false,
+                      shouldAddHostname: true,
+                    }),
                   },
             },
           };
         default:
+          // When DCS type is unknown
           return {
             etcd_cluster: { hosts: {} },
             consul_instances: {
@@ -229,6 +299,7 @@ const constructDcsEnvs = (values: ClusterFormValues) => {
       }
     }
   }
+  // For expert mode, not deploying new DCS cluster & DCS type is CONSUL
   if (IS_EXPERT_MODE && !values[DCS_BLOCK_FIELD_NAMES.IS_DEPLOY_NEW_CLUSTER]) {
     if (values[DCS_BLOCK_FIELD_NAMES.TYPE] === DCS_TYPES.CONSUL) {
       return {
@@ -241,14 +312,22 @@ const constructDcsEnvs = (values: ClusterFormValues) => {
 };
 
 /**
- * Function maps Load Balancers block form values into correct request format.
- * @param values - Filled form values.
+ * Constructs the load balancer environment object required for the
+ * cluster inventory Ansible JSON based on form values.
+ *
+ * Depending on the HAProxy configuration and deployment mode,
+ * this function will map appropriate server IP addresses to their
+ * respective ansible_host properties for the balancer hosts.
+ *
+ * @param values - The filled form values from the cluster creation form.
+ * @returns Object containing the `balancers.hosts` map for Ansible inventory.
  */
 const constructBalancersEnvs = (values: ClusterFormValues) => {
   let balancerHosts = {};
 
   if (values[LOAD_BALANCERS_FIELD_NAMES.IS_HAPROXY_ENABLED]) {
     if (IS_EXPERT_MODE && !values[LOAD_BALANCERS_FIELD_NAMES.IS_DEPLOY_TO_DATABASE_SERVERS]) {
+      // Advanced: use explicit load balancer database list
       balancerHosts = values[LOAD_BALANCERS_FIELD_NAMES.LOAD_BALANCER_DATABASES].reduce(
         (acc, server) => ({
           ...acc,
@@ -259,6 +338,7 @@ const constructBalancersEnvs = (values: ClusterFormValues) => {
         {},
       );
     } else {
+      // Standard: use main database server list
       balancerHosts = values[DATABASE_SERVERS_FIELD_NAMES.DATABASE_SERVERS].reduce(
         (acc, server) => ({
           ...acc,
@@ -279,11 +359,19 @@ const constructBalancersEnvs = (values: ClusterFormValues) => {
 };
 
 /**
- * Functions creates an object with envs exclusive to local clusters.
- * @param values - Filled form values.
+ * Generates local machine environment variables object for Ansible inventory JSON.
+ *
+ * This function builds an environment object required for local cluster deployments.
+ * It considers authentication method (SSH or Password), usage of pre-defined secrets,
+ * and populates Ansible inventory settings for master and replica database servers,
+ * balancers, and DCS environments. The output structure is compatible with Ansible.
+ *
+ * @param values - The filled form values from the cluster creation form.
  * @param secretId - Optional ID of secret if exists.
+ * @returns Environment variables object, including SSH key if needed and ANSIBLE_INVENTORY_JSON.
  */
 export const getLocalMachineEnvs = (values: ClusterFormValues, secretId?: number) => ({
+  // If using SSH authentication and no pre-defined secret, include the SSH private key content.
   ...(values[CLUSTER_FORM_FIELD_NAMES.AUTHENTICATION_METHOD] === AUTHENTICATION_METHODS.SSH &&
   !values[CLUSTER_FORM_FIELD_NAMES.IS_USE_DEFINED_SECRET] &&
   !secretId
@@ -295,6 +383,7 @@ export const getLocalMachineEnvs = (values: ClusterFormValues, secretId?: number
     all: {
       vars: {
         ansible_user: values[SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.USERNAME],
+        // For password-based authentication, include ssh_pass and sudo_pass.
         ...(values[CLUSTER_FORM_FIELD_NAMES.AUTHENTICATION_METHOD] === AUTHENTICATION_METHODS.PASSWORD
           ? {
               ansible_ssh_pass: values[SECRET_MODAL_CONTENT_FORM_FIELD_NAMES.USERNAME],
@@ -303,8 +392,10 @@ export const getLocalMachineEnvs = (values: ClusterFormValues, secretId?: number
           : {}),
       },
       children: {
+        // Add balancers and DCS envs via helper functions.
         ...constructBalancersEnvs(values),
         ...constructDcsEnvs(values),
+        // The 'master' host group: first database server is master.
         master: {
           hosts: {
             [values[DATABASE_SERVERS_FIELD_NAMES.DATABASE_SERVERS][0][
@@ -330,6 +421,7 @@ export const getLocalMachineEnvs = (values: ClusterFormValues, secretId?: number
             },
           },
         },
+        // The 'replica' host group: all other database servers (if present).
         ...(values[DATABASE_SERVERS_FIELD_NAMES.DATABASE_SERVERS].length > 1
           ? {
               replica: {
@@ -363,18 +455,19 @@ export const getLocalMachineEnvs = (values: ClusterFormValues, secretId?: number
 
 /**
  * Function converts 'extensions' form value into request format.
- * @param values - Filled form values.
+ *
+ * @param values - The form values containing extensions data
+ * @returns An object with extensions in API-ready format and extraVars for third-party extensions
  */
 const getExtensions = (values: ClusterFormValues) =>
   Object.entries(values?.[EXTENSION_BLOCK_FIELD_NAMES.EXTENSIONS])?.reduce(
     (acc, [key, value]) => {
       if (value?.db?.length) {
         const convertedToReqFormat = value.db.map((item) => ({
-          // convert extension values into [{ext:"", db:""}] format, accepted for API call
           ext: key,
           db: values[DATABASES_BLOCK_FIELD_NAMES.NAMES][item],
         }));
-        const convertedToExtraVars = value?.isThirdParty // transform third party extensions in {enable_name: true} format. This object should be passed as extra_vars to enable them
+        const convertedToExtraVars = value?.isThirdParty // transform third party extensions in {enable_name: true} format.
           ? {
               ...acc.extraVars,
               [`enable_${key}`]: true,
@@ -388,8 +481,14 @@ const getExtensions = (values: ClusterFormValues) =>
   ) ?? { db: [], extraVars: {} };
 
 /**
- * Functions creates an object with base cluster extra_vars shared between cloud and local clusters.
- * @param values - Filled form values.
+ * Generates an object containing base cluster extra_vars shared between cloud and local clusters.
+ *
+ * This function constructs extra variables required for the creation of a cluster, using the form values provided.
+ * If expert mode is enabled, additional configuration is included, such as databases, users, connection pool settings,
+ * enabled extensions, backup configuration, PostgreSQL and kernel parameters, and synchronous standby settings.
+ *
+ * @param values - The filled form values for the cluster creation form.
+ * @returns An object containing the encoded base extra_vars for the cluster.
  */
 export const getBaseClusterExtraVars = (values: ClusterFormValues) => {
   const extensions = IS_EXPERT_MODE ? getExtensions(values) : [];
@@ -507,21 +606,36 @@ export const getBaseClusterExtraVars = (values: ClusterFormValues) => {
     : baseExtraVars;
 };
 
+/**
+ * Converts an object's key-value pairs to an array of strings in the format "key=base64_encoded_value".
+ *
+ * If a value is a string, it is encoded directly to base64.
+ * If a value is not a string, it is first stringified to JSON and then encoded to base64.
+ *
+ * @param object - The object whose key-value pairs are to be converted and encoded.
+ * @returns An array of "key=base64_encoded_value" strings.
+ */
 const convertObjectValueToBase64Format = (object: Record<string, unknown>): string[] =>
-  Object.entries(object).reduce<string[]>((acc, [key, value]) => {
-    let raw: string;
+  Object.entries(object).reduce<string[]>(
+    (acc, [key, value]) => [
+      ...acc,
+      // Encode strings without extra quotes if value is a string, otherwise encode the JSON string.
+      `${key}=${btoa(typeof value === 'string' ? value : JSON.stringify(value))}`,
+    ],
+    [],
+  );
 
-    if (typeof value === 'string') {
-      // Encode strings without extra quotes
-      raw = value;
-    } else {
-      raw = JSON.stringify(value) ?? '';
-    }
-
-    acc.push(`${key}=${btoa(raw)}`);
-    return acc;
-  }, []);
-
+/**
+ * Generates the request parameters for cloud provider clusters.
+ *
+ * Constructs the environment variables and extra_vars required for a cluster creation API request.
+ * Environment variables are built out of secret fields, possibly encoded (base64) for GCP.
+ * 
+ * @param values - Form values provided by the user.
+ * @param secretsInfo - An object containing secret credentials/information.
+ * @param customExtraVars - Optional custom extra_vars object (usually from YAML editor).
+ * @returns An object containing 'envs' and 'extra_vars' for the API request.
+ */
 const getRequestCloudParams = (values, secretsInfo, customExtraVars) => {
   const secretsObject = Object.fromEntries(
     Object.entries({
@@ -541,6 +655,18 @@ const getRequestCloudParams = (values, secretsInfo, customExtraVars) => {
   };
 };
 
+/**
+ * Generates the request parameters for local machine clusters.
+ *
+ * Constructs the environment variables and extra_vars required for submitting
+ * a local machine cluster creation API request. Environment variables are encoded
+ * in base64 format.
+ *
+ * @param values - Form values provided by the user.
+ * @param secretId - The optional ID of the secret, if one exists.
+ * @param customExtraVars - Optional custom extra_vars object (usually from YAML editor).
+ * @returns An object containing 'envs', 'extra_vars', and 'existing_cluster' for the API request.
+ */
 const getRequestLocalMachineParams = (values, secretId, customExtraVars) => ({
   envs: convertObjectValueToBase64Format(getLocalMachineEnvs(values, secretId)),
   extra_vars: customExtraVars ?? {
@@ -554,12 +680,19 @@ const getRequestLocalMachineParams = (values, secretId, customExtraVars) => ({
 });
 
 /**
- * Functions creates an object with fields and values in format required by API.
+ * Maps cluster form values and related information to API request fields for cluster creation.
+ * 
+ * This function prepares the parameters for the cluster creation API request
+ * by combining form values, secret IDs, project IDs, and custom extra variables.
+ * It determines the correct set of fields and formatting required based on the creation type
+ * and provider, supporting both YAML and form-based creation flows.
+ *
  * @param values - Filled form values.
  * @param secretId - Optional ID of secret if exists.
  * @param projectId - Optional ID of a current project.
  * @param secretsInfo - Optional object with secret information.
  * @param customExtraVars - Optional parameter with custom extra vars (from YAML editor).
+ * @returns The cluster creation API request object.
  */
 export const mapFormValuesToRequestFields = ({
   values,
