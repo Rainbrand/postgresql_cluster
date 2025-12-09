@@ -60,4 +60,4 @@ jobs:
 
       - name: Run TypeScript type check
         working-directory: console/ui
-        run: yarn tsc --noEmit
+        run: yarn tsc --noEmit --diagnostics
