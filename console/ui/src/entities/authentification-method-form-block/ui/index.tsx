@@ -36,15 +36,15 @@ const AuthenticationMethodFormBlock: React.FC = () => {
   const watchIsSaveToConsole = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.AUTHENTICATION_IS_SAVE_TO_CONSOLE });
   const watchIsUseDefinedSecret = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.IS_USE_DEFINED_SECRET });
 
-  const secrets = useGetSecretsQuery({ type: watchAuthenticationMethod, projectId: currentProject });
+  const secrets = useGetSecretsQuery({ type: watchAuthenticationMethod, projectId: Number(currentProject) });
 
   useEffect(() => {
     resetField(CLUSTER_FORM_FIELD_NAMES.SECRET_ID);
-  }, [watchIsUseDefinedSecret, watchAuthenticationMethod]);
+  }, [watchIsUseDefinedSecret, watchAuthenticationMethod, resetField]);
 
   useEffect(() => {
     setValue(CLUSTER_FORM_FIELD_NAMES.IS_USE_DEFINED_SECRET, !!secrets.data?.data?.length);
-  }, [secrets.data?.data?.length]);
+  }, [secrets.data?.data?.length, setValue]);
 
   return (
     <Box sx={{ width: '100%' }}>
