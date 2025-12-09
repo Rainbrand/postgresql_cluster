@@ -1,5 +1,7 @@
 import { FC } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { ClustersTableRemoveButtonProps } from '@features/clusters-table-row-actions/model/types.ts';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';

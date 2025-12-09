@@ -1,5 +1,12 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import { Box, Checkbox, FormControl, ListItemText, MenuItem, Popover, Select, Switch } from '@mui/material';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Popover from '@mui/material/Popover';
+import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DATABASES_BLOCK_FIELD_NAMES } from '@entities/cluster/expert-mode/databases-block/model/const.ts';
 import { EXTENSION_BLOCK_FIELD_NAMES } from '@entities/cluster/expert-mode/extensions-block/model/const.ts';

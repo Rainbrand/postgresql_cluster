@@ -1,6 +1,11 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, InputAdornment, MenuItem, Stack, TextField, useTheme } from '@mui/material';
+import Button from '@mui/material/Button';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import useTheme from '@mui/system/useTheme';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { OperationsTableButtonsProps } from '@features/operations-table-buttons/model/types.ts';
 import CalendarClockIcon from '@shared/assets/calendarClockICon.svg?react';

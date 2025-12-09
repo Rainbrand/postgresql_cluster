@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +34,7 @@ const ClusterFormProvidersBlock: FC<ProvidersBlockProps> = ({ providers }) => {
       [INSTANCES_BLOCK_FIELD_NAMES.INSTANCE_TYPE]: 'small',
       [CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG]: value?.instance_types?.small?.[0],
       [STORAGE_BLOCK_FIELDS.STORAGE_AMOUNT]:
-        value?.volumes?.find((volume) => volume?.is_default)?.min_size < 100 
+        value?.volumes?.find((volume) => volume?.is_default)?.min_size < 100
           ? 100
           : value?.volumes?.find((volume) => volume?.is_default)?.min_size,
       [BACKUPS_BLOCK_FIELD_NAMES.IS_BACKUPS_ENABLED]: value.code !== PROVIDERS.LOCAL,

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import OperationsTable from '@widgets/operations-table';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 
 const Operations: FC = () => {
   return (

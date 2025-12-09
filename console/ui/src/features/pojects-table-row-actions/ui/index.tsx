@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { ListItemIcon, MenuItem } from '@mui/material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useTranslation } from 'react-i18next';
 import { useDeleteProjectsByIdMutation } from '@shared/api/api/projects.ts';

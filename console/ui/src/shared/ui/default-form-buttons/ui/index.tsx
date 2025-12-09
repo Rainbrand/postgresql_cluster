@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
-import { Button, CircularProgress } from '@mui/material';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import { DefaultFormButtonsProps } from '@shared/ui/default-form-buttons/model/types.ts';
 
 const StyledDefaultFormButtons = styled.div`

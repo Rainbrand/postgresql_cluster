@@ -5,7 +5,7 @@ import PasswordMethodFormPart from '@entities/authentification-method-form-block
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import { SECRET_MODAL_CONTENT_FORM_FIELD_NAMES } from '@entities/secret-form-block/model/constants.ts';
-import { TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { useTranslation } from 'react-i18next';
 
 const AuthenticationFormPart: FC = () => {

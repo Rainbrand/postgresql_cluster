@@ -1,6 +1,10 @@
 import { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Card, IconButton, Stack, TextField, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import { LOAD_BALANCERS_FIELD_NAMES } from '@entities/cluster/load-balancers-block/model/const.ts';

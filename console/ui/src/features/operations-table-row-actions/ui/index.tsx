@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuItem } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 import { TableRowActionsProps } from '@shared/model/types.ts';
 import { useNavigate } from 'react-router-dom';
 import RouterPaths from '@app/router/routerPathsConfig';

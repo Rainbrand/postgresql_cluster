@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetClustersByIdQuery } from '@shared/api/api/clusters.ts';
-import { Grid } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import ClusterOverviewTable from '@widgets/cluster-overview-table';
 import ConnectionInfo from '@entities/cluster/connection-info';
 import ClusterInfo from '@entities/cluster/cluster-info';

@@ -10,7 +10,8 @@ import ClustersOverviewTableButtons from '@widgets/cluster-overview-table/ui/Clu
 import { useGetOverviewClusterTableData } from '@widgets/cluster-overview-table/lib/hooks.tsx';
 import { ClusterInfo } from '@shared/api/api/clusters.ts';
 import DefaultTable from '@shared/ui/default-table';
-import { Stack, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import ClustersOverviewTableRowActions from '@features/clusters-overview-table-row-actions';
 import RowActionsMenu from '@features/row-actions-menu/ui';
 

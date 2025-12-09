@@ -1,5 +1,11 @@
 import React, { FC, useEffect } from 'react';
-import { AppBar, Box, MenuItem, Stack, TextField, Toolbar, Typography } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import Logo from '@shared/assets/AutobaseLogo.svg?react';
 import LogoutButton from '@features/logout-button';
 import ThemeToggle from '@features/theme-toggle';

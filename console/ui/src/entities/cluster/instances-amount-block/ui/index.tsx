@@ -1,7 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { Box, Checkbox, FormControlLabel, Tooltip, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import ClusterSliderBox from '@shared/ui/slider-box';
 import ServersIcon from '@assets/instanceIcon.svg?react';

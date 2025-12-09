@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Stack, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import ConfigurePostgresParametersModal from '@entities/cluster/expert-mode/postgres-parameters-block/ui/ConfigurePostgresParametersModal.tsx';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';

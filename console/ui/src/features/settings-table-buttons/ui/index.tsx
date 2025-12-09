@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import SettingsAddSecret from '@features/add-secret';
 
 const SettingsTableButtons: React.FC = () => (

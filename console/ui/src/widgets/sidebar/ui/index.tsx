@@ -2,7 +2,14 @@ import { COLLAPSED_SIDEBAR_WIDTH, OPEN_SIDEBAR_WIDTH, sidebarData, sidebarLowDat
 import SidebarItem from '@entities/sidebar-item';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { Box, Divider, Drawer, IconButton, List, Stack, Toolbar, useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useEffect, useState } from 'react';
 import CollapseIcon from '@shared/assets/collapseIcon.svg?react';
 

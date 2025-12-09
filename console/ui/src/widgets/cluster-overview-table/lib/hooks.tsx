@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { CLUSTER_OVERVIEW_TABLE_COLUMN_NAMES } from '@widgets/cluster-overview-table/model/constants.ts';
 import { ClusterInfoInstance } from '@shared/api/api/clusters.ts';
-import { Box, Chip } from '@mui/material';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 
 export const useGetOverviewClusterTableData = (data: ClusterInfoInstance[]) => {
   return useMemo(

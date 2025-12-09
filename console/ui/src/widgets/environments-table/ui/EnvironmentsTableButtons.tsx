@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import AddEnvironment from '@features/add-environment';
 
 const EnvironmentsTableButtons: FC = () => {

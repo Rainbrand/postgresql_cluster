@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@app/redux/store/hooks.ts';
 import { selectThemeMode } from '@app/redux/slices/themeSlice/themeSelectors.ts';

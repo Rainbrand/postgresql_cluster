@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import { ClusterFromInstanceConfigBoxProps } from '@entities/cluster/cluster-instance-config-box/model/types.ts';
 import SelectableBox from '@shared/ui/selectable-box';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import RamIcon from '@assets/ramIcon.svg?react';
 import CpuIcon from '@assets/cpuIcon.svg?react';
 

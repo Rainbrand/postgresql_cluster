@@ -4,7 +4,10 @@ import {
   CLUSTER_TABLE_COLUMN_NAMES,
   clusterStatusColorNamesMap,
 } from '@widgets/clusters-table/model/constants.ts';
-import { CircularProgress, Link, Stack, Typography } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { generateAbsoluteRouterPath } from '@shared/lib/functions.ts';
 import RouterPaths from '@app/router/routerPathsConfig';
 import { ClusterInfo } from '@shared/api/api/clusters.ts';

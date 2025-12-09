@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import BreadcrumbsItem from '@entities/breadcumb-item';
 import useBreadcrumbs from '@/features/bradcrumbs/hooks/useBreadcrumbs.tsx';
-import { Breadcrumbs as MaterialBreadcrumbs, Icon, Typography, useTheme } from '@mui/material';
+import MaterialBreadcrumbs from '@mui/material/Breadcrumbs';
+import Icon from '@mui/material/Icon';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import RouterPaths from '@app/router/routerPathsConfig';
 import HomeOutlinedIcon from '@assets/HomeOutlinedIcon.svg?react';
 import { generateAbsoluteRouterPath } from '@shared/lib/functions.ts';

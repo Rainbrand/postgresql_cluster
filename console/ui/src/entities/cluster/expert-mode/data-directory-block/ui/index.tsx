@@ -1,5 +1,7 @@
 import { FC, useEffect } from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DATA_DIRECTORY_FIELD_NAMES } from '@entities/cluster/expert-mode/data-directory-block/model/const.ts';
 import { useTranslation } from 'react-i18next';

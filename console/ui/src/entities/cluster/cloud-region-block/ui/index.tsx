@@ -1,7 +1,11 @@
 import { FC, SyntheticEvent } from 'react';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
-import { Box, Divider, Stack, Tab, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import ClusterFormRegionConfigBox from '@widgets/cluster-form/ui/ClusterFormRegionConfigBox.tsx';

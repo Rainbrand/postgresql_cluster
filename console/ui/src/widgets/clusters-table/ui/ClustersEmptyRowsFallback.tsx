@@ -1,7 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import { createClusterButtonHandler } from '@widgets/clusters-table/lib/functions.ts';
 import DatabaseIcon from '@assets/databaseIcon.svg?react';
 
@@ -9,7 +13,7 @@ const ClustersEmptyRowsFallback: React.FC = () => {
   const { t } = useTranslation('clusters');
   const navigate = useNavigate();
   const theme = useTheme();
-  
+
   // Subtle icon color (20% opacity): use transparent black in light mode, transparent white in dark mode
   const iconColor = theme.palette.mode === 'light' ? '#00000033' : '#FFFFFF33';
 

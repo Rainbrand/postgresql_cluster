@@ -1,4 +1,8 @@
-import { Icon, Link, Stack, Typography, useTheme } from '@mui/material';
+import Icon from '@mui/material/Icon';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import { Trans, useTranslation } from 'react-i18next';
 import { providerNamePricingListMap } from '@widgets/cluster-summary/model/constants.ts';

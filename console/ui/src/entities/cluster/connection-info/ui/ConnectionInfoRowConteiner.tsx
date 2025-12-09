@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import { ConnectionInfoRowContainerProps } from '@entities/cluster/connection-info/model/types.ts';
 
 const ConnectionInfoRowContainer: FC<ConnectionInfoRowContainerProps> = ({ children }) => {

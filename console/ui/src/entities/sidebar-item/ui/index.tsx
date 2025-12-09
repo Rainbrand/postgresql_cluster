@@ -1,6 +1,9 @@
 import { FC } from 'react';
 import { SidebarItemProps } from '../model/types.ts';
-import { Box, ListItem, Tooltip, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import ListItem from '@mui/material/ListItem';
+import Tooltip from '@mui/material/Tooltip';
+import useTheme from '@mui/system/useTheme';
 import SidebarItemContent from '@entities/sidebar-item/ui/SidebarItemContent.tsx';
 
 const SidebarItem: FC<SidebarItemProps> = ({ path, label, icon, isActive, isCollapsed = false, target, ...props }) => {

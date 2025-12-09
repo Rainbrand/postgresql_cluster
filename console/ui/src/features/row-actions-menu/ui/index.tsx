@@ -1,5 +1,6 @@
 import { useState, FC, MouseEvent } from 'react';
-import { IconButton, Menu } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { MRT_Row, MRT_RowData } from 'material-react-table';
 

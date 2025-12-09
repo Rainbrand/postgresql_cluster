@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Card, CircularProgress, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CircularProgress from '@mui/material/CircularProgress';
+import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
+import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import { useTranslation } from 'react-i18next';
 import { Controller, FormProvider, useForm } from 'react-hook-form';

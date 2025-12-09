@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Box, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { ErrorBoxProps } from '@shared/ui/error-box/model/types.ts';
 

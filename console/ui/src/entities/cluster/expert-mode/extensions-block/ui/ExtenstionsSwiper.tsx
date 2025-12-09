@@ -1,6 +1,9 @@
 import { FC, useState } from 'react';
 import Spinner from '@shared/ui/spinner';
-import { IconButton, Stack, Typography, useTheme } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Grid, Pagination } from 'swiper/modules';

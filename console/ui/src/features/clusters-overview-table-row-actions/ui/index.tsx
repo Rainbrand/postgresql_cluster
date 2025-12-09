@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { handleRequestErrorCatch } from '@shared/lib/functions.ts';
-import { ListItemIcon, MenuItem } from '@mui/material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
 import { TableRowActionsProps } from '@shared/model/types.ts';
 import { toast } from 'react-toastify';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';

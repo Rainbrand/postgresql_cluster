@@ -1,5 +1,7 @@
 import { FC } from 'react';
-import { Divider, Tab, Tabs } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { settingsTabsContent } from '@pages/settings/model/constants.ts';
 import { useTranslation } from 'react-i18next';

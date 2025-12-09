@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { useTranslation } from 'react-i18next';
 import { SECRET_MODAL_CONTENT_FORM_FIELD_NAMES } from '@entities/secret-form-block/model/constants.ts';
 

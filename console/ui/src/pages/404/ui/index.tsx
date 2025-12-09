@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import RouterPaths from '@app/router/routerPathsConfig';
 import { generateAbsoluteRouterPath } from '@shared/lib/functions.ts';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Container, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 
 const Page404: FC = () => {
   const { t } = useTranslation('shared');

@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
 import { createAppTheme } from '@shared/theme/theme.ts';
 import Router from '@app/router/Router.tsx';
 import { Provider } from 'react-redux';
@@ -10,6 +10,7 @@ import { store } from '@app/redux/store/store.ts';
 import { useAppSelector, useAppDispatch } from '@app/redux/store/hooks.ts';
 import { selectActualTheme } from '@app/redux/slices/themeSlice/themeSelectors.ts';
 import { updateSystemTheme } from '@app/redux/slices/themeSlice/themeSlice.ts';
+import ThemeProvider from '@mui/system/ThemeProvider';
 
 const AppContent: FC = () => {
   const dispatch = useAppDispatch();
@@ -28,13 +29,13 @@ const AppContent: FC = () => {
   }, [dispatch]);
 
   return (
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Router />
-          <ToastContainer theme={actualTheme} />
-        </LocalizationProvider>
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Router />
+        <ToastContainer theme={actualTheme} />
+      </LocalizationProvider>
+    </ThemeProvider>
   );
 };
 

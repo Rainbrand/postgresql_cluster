@@ -1,6 +1,9 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import useTheme from '@mui/system/useTheme';
 import { SidebarItemProps } from '@entities/sidebar-item/model/types.ts';
 
 const SidebarItemContent: FC<SidebarItemProps> = ({

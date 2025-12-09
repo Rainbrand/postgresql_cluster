@@ -1,5 +1,13 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import ClusterSliderBox from '@shared/ui/slider-box';
 import { useTranslation } from 'react-i18next';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';

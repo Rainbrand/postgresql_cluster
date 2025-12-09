@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  Radio,
-  Stack,
-  TextField,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Radio from '@mui/material/Radio';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { authenticationMethods } from '@entities/authentification-method-form-block/model/constants.ts';
 import { useTranslation } from 'react-i18next';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
@@ -20,6 +17,7 @@ import { selectCurrentProject } from '@app/redux/slices/projectSlice/projectSele
 import AuthenticationFormPart from '@entities/authentification-method-form-block/ui/AuthenticationFormPart.tsx';
 import { SECRET_MODAL_CONTENT_FORM_FIELD_NAMES } from '@entities/secret-form-block/model/constants.ts';
 import { AUTHENTICATION_METHODS } from '@shared/model/constants.ts';
+import useTheme from '@mui/system/useTheme';
 
 const AuthenticationMethodFormBlock: React.FC = () => {
   const { t } = useTranslation(['clusters', 'shared', 'settings']);

@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import SelectableBox from '@shared/ui/selectable-box';
-import { Box, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import FlagsIcon from '@assets/flagIcon.svg?react';
 import { ClusterFormRegionConfigBoxProps } from '@widgets/cluster-form/model/types.ts';
 

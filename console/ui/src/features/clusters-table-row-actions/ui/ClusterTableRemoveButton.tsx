@@ -1,16 +1,14 @@
 import { FC, useState } from 'react';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Stack,
-  Typography,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { ClustersTableRemoveButtonProps } from '@features/clusters-table-row-actions/model/types.ts';
 import { useDeleteClustersByIdMutation } from '@shared/api/api/clusters.ts';

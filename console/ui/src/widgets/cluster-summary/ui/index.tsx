@@ -1,5 +1,7 @@
 import { FC } from 'react';
-import { Divider, Paper, Typography } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import { useFormContext, useWatch } from 'react-hook-form';

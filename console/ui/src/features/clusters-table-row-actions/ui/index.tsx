@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { TableRowActionsProps } from '@shared/model/types.ts';
-import { MenuItem } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 import ClustersTableRemoveButton from './ClusterTableRemoveButton';
 import ClustersTableExportButton from './ClusterTableExportButton';
 

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Stack, TextField, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { Controller, useFormContext } from 'react-hook-form';
 import { SETTINGS_FORM_FIELDS_NAMES } from '@entities/settings/proxy-block/model/constants.ts';

@@ -12,7 +12,9 @@ import {
   YAML_EDITOR_FORM_FIELD_NAMES,
 } from '@widgets/yaml-editor-form/model/const.ts';
 import { YamlEditorFormValues } from '@widgets/yaml-editor-form/model/types.ts';
-import { Box, Stack, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import useTheme from '@mui/system/useTheme';
 import * as YAML from 'yaml';
 import ErrorBox from '@shared/ui/error-box/ui';
 import { ErrorBoundary } from 'react-error-boundary';

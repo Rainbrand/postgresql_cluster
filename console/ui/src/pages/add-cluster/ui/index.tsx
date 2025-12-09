@@ -1,7 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import ClusterForm from '@widgets/cluster-form';
 import ClusterSummary from '@widgets/cluster-summary';
-import { Box, Divider, Stack, Tab } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
+import Tab from '@mui/material/Tab';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ClusterFormSchema } from '@widgets/cluster-form/model/validation.ts';

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import Logout from '@mui/icons-material/LogoutOutlined';
-import { IconButton, Tooltip } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from 'react-router-dom';
 import RouterPaths from '@app/router/routerPathsConfig';
 import { generateAbsoluteRouterPath } from '@shared/lib/functions.ts';

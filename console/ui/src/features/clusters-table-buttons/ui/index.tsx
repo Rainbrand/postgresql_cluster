@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Stack } from '@mui/material';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 import { generateAbsoluteRouterPath } from '@shared/lib/functions.ts';
 import RouterPaths from '@app/router/routerPathsConfig';

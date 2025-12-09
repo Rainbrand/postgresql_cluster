@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import EyeIcon from '@mui/icons-material/VisibilityOutlined';
 
 import CopyIcon from '@shared/ui/copy-icon';

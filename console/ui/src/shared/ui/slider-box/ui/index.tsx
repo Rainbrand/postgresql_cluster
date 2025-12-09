@@ -1,5 +1,9 @@
 import { ChangeEvent, FC } from 'react';
-import { Box, Slider, TextField, Typography, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import { SliderBoxProps } from '@shared/ui/slider-box/model/types.ts';
 
 import { generateSliderMarks } from '@shared/ui/slider-box/lib/functions.ts';

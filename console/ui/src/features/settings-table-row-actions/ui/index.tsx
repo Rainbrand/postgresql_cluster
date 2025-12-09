@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ListItemIcon, MenuItem } from '@mui/material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
 import { useDeleteSecretsByIdMutation } from '@shared/api/api/secrets.ts';
 import { TableRowActionsProps } from '@shared/model/types.ts';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';

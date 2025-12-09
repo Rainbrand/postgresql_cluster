@@ -17,7 +17,7 @@ import ClusterFormLocalMachineFormPart from '@widgets/cluster-form/ui/ClusterFor
 import { usePostClustersMutation } from '@shared/api/api/clusters.ts';
 import { useAppSelector } from '@app/redux/store/hooks.ts';
 import { selectCurrentProject } from '@app/redux/slices/projectSlice/projectSelectors.ts';
-import { Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import ClusterSecretModal from '@features/cluster-secret-modal';
 import { toast } from 'react-toastify';
 import { IS_EXPERT_MODE } from '@shared/model/constants.ts';

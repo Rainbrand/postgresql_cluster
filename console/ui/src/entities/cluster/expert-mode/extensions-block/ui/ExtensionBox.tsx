@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { Link, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/system/useTheme';
 import { ExtensionBoxProps } from '@entities/cluster/expert-mode/extensions-block/model/types.ts';
 import ExtensionSelector from '@entities/cluster/expert-mode/extensions-block/ui/ExtensionSelector.tsx';
 

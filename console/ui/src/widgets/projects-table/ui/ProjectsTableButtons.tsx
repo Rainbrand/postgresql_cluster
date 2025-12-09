@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import AddProject from '@features/add-project';
-import { Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
 
 const ProjectsTableButtons: FC = () => {
   return (

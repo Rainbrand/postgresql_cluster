@@ -1,7 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SettingsFormValues } from '@entities/settings/proxy-block/model/types.ts';
-import { Box, Button, CircularProgress, Stack } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
 import SettingsProxyBlock from '@entities/settings/proxy-block';
 import { useTranslation } from 'react-i18next';
 import { SETTINGS_FORM_FIELDS_NAMES } from '@entities/settings/proxy-block/model/constants.ts';

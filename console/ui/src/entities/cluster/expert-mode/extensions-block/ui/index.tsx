@@ -1,6 +1,12 @@
 import { ChangeEvent, FC, useEffect, useRef, useState, useTransition } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Checkbox, FormControlLabel, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { ResponseDatabaseExtension, useGetDatabaseExtensionsQuery } from '@shared/api/api/other.ts';
 import Spinner from '@shared/ui/spinner';
 import { useWatch } from 'react-hook-form';

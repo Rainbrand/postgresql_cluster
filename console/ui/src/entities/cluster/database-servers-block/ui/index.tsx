@@ -1,7 +1,12 @@
 import { FC } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import DatabaseServerBox from '@entities/cluster/database-servers-block/ui/DatabaseServerBox.tsx';
-import { Box, Button, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 import { DATABASE_SERVERS_FIELD_NAMES } from '@entities/cluster/database-servers-block/model/const.ts';

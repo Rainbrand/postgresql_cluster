@@ -1,7 +1,9 @@
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { getAddSecretFormContentByType } from '@entities/secret-form-block/lib/functions.ts';
-import { Link, Stack, Typography } from '@mui/material';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { SecretFormBlockProps } from '@entities/secret-form-block/model/types.ts';
 
 const SecretFormBlock: React.FC<SecretFormBlockProps> = ({ secretType, isAdditionalInfoDisplayed = false }) => {

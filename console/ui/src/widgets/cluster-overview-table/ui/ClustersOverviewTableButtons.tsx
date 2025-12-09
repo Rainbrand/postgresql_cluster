@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import { Button, Stack } from '@mui/material';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useTranslation } from 'react-i18next';
 import { usePostClustersByIdRefreshMutation } from '@shared/api/api/clusters.ts';

@@ -1,16 +1,14 @@
 import { FC, useRef, useState } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  Checkbox,
-  CircularProgress,
-  FormControlLabel,
-  MenuItem,
-  Modal,
-  Stack,
-  TextField,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Checkbox from '@mui/material/Checkbox';
+import CircularProgress from '@mui/material/CircularProgress';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { CLUSTER_CREATION_TYPES, CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
@@ -42,7 +40,7 @@ import { isEmpty } from 'lodash';
 
 /**
  * ClusterSecretModal is a modal dialog component for managing cluster secrets.
- * 
+ *
  * This component allows a user to create and select secrets to be used for cluster authentication,
  * and supports both new secret creation and use of existing secrets from the secret store.
  *

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import { useGetOperationsByIdLogQuery } from '@shared/api/api/operations.ts';
 import { useParams } from 'react-router-dom';
 import { LazyLog } from 'react-lazylog';

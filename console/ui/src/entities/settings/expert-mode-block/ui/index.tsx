@@ -1,5 +1,7 @@
 import { FC } from 'react';
-import { Stack, Switch, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 import { Controller, useFormContext } from 'react-hook-form';
 import { SETTINGS_FORM_FIELDS_NAMES } from '@entities/settings/proxy-block/model/constants.ts';
 import { useTranslation } from 'react-i18next';
