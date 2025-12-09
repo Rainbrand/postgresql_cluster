@@ -18,11 +18,11 @@ import { generateAbsoluteRouterPath, handleRequestErrorCatch } from '@shared/lib
 import RouterPaths from '@app/router/routerPathsConfig';
 import { useNavigate } from 'react-router-dom';
 import {
-  ClusterFormValues,
+  ClusterFormModalValues,
   ClusterSecretModalFormValues,
   ClusterSecretModalProps,
 } from '@features/cluster-secret-modal/model/types.ts';
-import { useGetSecretsQuery, usePostSecretsMutation } from '@shared/api/api/secrets.ts';
+import { ResponseSecretInfo, useGetSecretsQuery, usePostSecretsMutation } from '@shared/api/api/secrets.ts';
 import {
   CLUSTER_SECRET_MODAL_FORM_DEFAULT_VALUES,
   CLUSTER_SECRET_MODAL_FORM_FIELD_NAMES,
@@ -40,11 +40,22 @@ import { mapFormValuesToRequestFields } from '@shared/lib/clusterValuesTransform
 import { PROVIDERS } from '@shared/config/constants.ts';
 import { isEmpty } from 'lodash';
 
+/**
+ * ClusterSecretModal is a modal dialog component for managing cluster secrets.
+ * 
+ * This component allows a user to create and select secrets to be used for cluster authentication,
+ * and supports both new secret creation and use of existing secrets from the secret store.
+ *
+ * @component
+ * @param isClusterFormDisabled - Flag determines if the cluster form is disabled.
+ * @param customExtraVars - Extra variables for the cluster form (from YAML editor, for example).
+ * @returns The rendered modal dialog for cluster secret management.
+ */
 const ClusterSecretModal: FC<ClusterSecretModalProps> = ({ isClusterFormDisabled = false, customExtraVars = {} }) => {
   const { t } = useTranslation(['clusters', 'shared', 'toasts']);
   const navigate = useNavigate();
   const currentProject = useAppSelector(selectCurrentProject);
-  const createSecretResultRef = useRef(null); // ref is used for case when user saves secret and uses its ID to create cluster
+  const createSecretResultRef = useRef<ResponseSecretInfo>(null); // ref is used for case when user saves secret and uses its ID to create cluster
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -100,7 +111,7 @@ const ClusterSecretModal: FC<ClusterSecretModalProps> = ({ isClusterFormDisabled
       }
       await addClusterTrigger({
         requestClusterCreate: mapFormValuesToRequestFields({
-          values: watchClusterFormValues as ClusterFormValues,
+          values: watchClusterFormValues as ClusterFormModalValues,
           secretsInfo: secretsFields,
           projectId: Number(currentProject),
           ...(!isEmpty(customExtraVars) ? { customExtraVars } : {}),

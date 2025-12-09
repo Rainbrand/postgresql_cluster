@@ -1,4 +1,4 @@
-import { ClusterFormValues } from '@features/cluster-secret-modal/model/types.ts';
+import { ClusterFormModalValues } from '@features/cluster-secret-modal/model/types.ts';
 import { CLUSTER_CREATION_TYPES, CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import { getSecretBodyFromValues } from '@entities/secret-form-block/lib/functions.ts';
 import { SECRET_MODAL_CONTENT_FORM_FIELD_NAMES } from '@entities/secret-form-block/model/constants.ts';
@@ -10,7 +10,7 @@ import { generateAbsoluteRouterPath, handleRequestErrorCatch } from '@shared/lib
 import RouterPaths from '@app/router/routerPathsConfig';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { GetSecretsApiResponse, usePostSecretsMutation } from '@shared/api/api/secrets.ts';
+import { GetSecretsApiResponse, ResponseSecretInfo, usePostSecretsMutation } from '@shared/api/api/secrets.ts';
 import { useAppSelector } from '@app/redux/store/hooks.ts';
 import { selectCurrentProject } from '@app/redux/slices/projectSlice/projectSelectors.ts';
 import { useRef } from 'react';
@@ -27,14 +27,14 @@ export const useClusterFormSubmit: ({
     values,
     customExtraVars,
   }: {
-    values: ClusterFormValues;
+    values: ClusterFormModalValues;
     customExtraVars?: Record<string, never>;
   }) => Promise<void>,
 ] = ({ secrets }) => {
   const { t } = useTranslation('clusters');
   const navigate = useNavigate();
   const currentProject = useAppSelector(selectCurrentProject);
-  const createSecretResultRef = useRef(null); // ref is used for a case when user saves secret and uses its ID to create a cluster
+  const createSecretResultRef = useRef<ResponseSecretInfo>(null); // ref is used for a case when user saves secret and uses its ID to create a cluster
 
   const [addSecretTrigger, addSecretTriggerState] = usePostSecretsMutation();
   const [addClusterTrigger, addClusterTriggerState] = usePostClustersMutation();
@@ -43,7 +43,7 @@ export const useClusterFormSubmit: ({
     values,
     customExtraVars,
   }: {
-    values: ClusterFormValues;
+    values: ClusterFormModalValues;
     customExtraVars?: Record<string, never>;
   }) => {
     if (values[CLUSTER_FORM_FIELD_NAMES.AUTHENTICATION_IS_SAVE_TO_CONSOLE] && !createSecretResultRef?.current) {
@@ -79,7 +79,7 @@ export const useClusterFormSubmit: ({
     values,
     customExtraVars,
   }: {
-    values: ClusterFormValues;
+    values: ClusterFormModalValues;
     customExtraVars?: Record<string, never>;
   }) => {
     await addClusterTrigger({
@@ -96,7 +96,7 @@ export const useClusterFormSubmit: ({
     values,
     customExtraVars,
   }: {
-    values: ClusterFormValues;
+    values: ClusterFormModalValues;
     customExtraVars?: Record<string, never>;
   }) => {
     const creationType = values[CLUSTER_FORM_FIELD_NAMES.CREATION_TYPE];

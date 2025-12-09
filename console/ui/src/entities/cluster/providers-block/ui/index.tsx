@@ -12,6 +12,7 @@ import ClusterFormCloudProviderBox from '@entities/cluster/providers-block/ui/Cl
 import { INSTANCES_BLOCK_FIELD_NAMES } from '@entities/cluster/instances-block/model/const.ts';
 import { STORAGE_BLOCK_FIELDS } from '@entities/cluster/storage-block/model/const.ts';
 import { BACKUPS_BLOCK_FIELD_NAMES } from '@entities/cluster/expert-mode/backups-block/model/const.ts';
+import { ResponseDeploymentInfo } from '@/shared/api/api/deployments';
 
 const ClusterFormProvidersBlock: FC<ProvidersBlockProps> = ({ providers }) => {
   const { t } = useTranslation('clusters');
@@ -20,7 +21,7 @@ const ClusterFormProvidersBlock: FC<ProvidersBlockProps> = ({ providers }) => {
 
   const nameIconProvidersMap = useNameIconProvidersMap();
 
-  const handleProviderChange = (value) => () => {
+  const handleProviderChange = (value: ResponseDeploymentInfo) => () => {
     reset((values) => ({
       ...values,
       [CLUSTER_FORM_FIELD_NAMES.PROVIDER]: value,
@@ -46,7 +47,7 @@ const ClusterFormProvidersBlock: FC<ProvidersBlockProps> = ({ providers }) => {
         name={CLUSTER_FORM_FIELD_NAMES.PROVIDER}
         render={({ field: { value } }) => (
           <Stack direction="row" spacing={2}>
-            {providers.map((provider: any) => (
+            {providers.map((provider) => (
               <ClusterFormCloudProviderBox
                 key={provider.code}
                 isActive={value?.code === provider.code}

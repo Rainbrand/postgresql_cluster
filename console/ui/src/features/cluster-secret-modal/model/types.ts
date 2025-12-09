@@ -52,7 +52,7 @@ interface ClusterLocalMachineProviderFormValues
   [CLUSTER_FORM_FIELD_NAMES.CLUSTER_VIP_ADDRESS]?: string;
 }
 
-export interface ClusterFormValues
+export interface ClusterFormModalValues
   extends
     ClusterCloudProviderFormValues,
     ClusterLocalMachineProviderFormValues,
@@ -64,6 +64,7 @@ export interface ClusterFormValues
     AdditionalSettingsBlockValues,
     PostgresParametersBlockValues,
     KernelParametersBlockValues,
+    BackupsBlockValues,
     YamlEditorFormValues {
   [CLUSTER_FORM_FIELD_NAMES.CREATION_TYPE]: string;
   [CLUSTER_FORM_FIELD_NAMES.PROVIDER]: ResponseDeploymentInfo;

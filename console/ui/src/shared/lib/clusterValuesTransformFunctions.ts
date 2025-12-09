@@ -1,4 +1,4 @@
-import { ClusterFormValues } from '@features/cluster-secret-modal/model/types.ts';
+import { ClusterFormModalValues } from '@features/cluster-secret-modal/model/types.ts';
 import { CLUSTER_CREATION_TYPES, CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import { INSTANCES_BLOCK_FIELD_NAMES } from '@entities/cluster/instances-block/model/const.ts';
 import { STORAGE_BLOCK_FIELDS } from '@entities/cluster/storage-block/model/const.ts';
@@ -57,7 +57,7 @@ export const convertModalParametersToArray = (value?: string) =>
  * @param values - The form values containing cluster configuration.
  * @returns An object with common extra vars.
  */
-export const getCommonExtraVars = (values: ClusterFormValues) => ({
+export const getCommonExtraVars = (values: ClusterFormModalValues) => ({
   postgresql_version: values[CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION],
   patroni_cluster_name: values[CLUSTER_FORM_FIELD_NAMES.CLUSTER_NAME],
 });
@@ -93,7 +93,7 @@ export const getCommonExtraVars = (values: ClusterFormValues) => ({
  *   - server_spot: Will be true if using AWS/GCP/Azure with spot/preemptible instances enabled.
  *   - server_network: (optional) Provided if custom network is defined.
  */
-export const getCloudProviderExtraVars = (values: ClusterFormValues) => ({
+export const getCloudProviderExtraVars = (values: ClusterFormModalValues) => ({
   ...getCommonExtraVars(values),
   cloud_provider: values[CLUSTER_FORM_FIELD_NAMES.PROVIDER].code,
   server_type:
@@ -143,7 +143,7 @@ export const getCloudProviderExtraVars = (values: ClusterFormValues) => ({
  * @param secretId - Optional ID of secret if exists.
  * @returns The extra_vars object tailored for local machine cluster creation.
  */
-export const getLocalMachineExtraVars = (values: ClusterFormValues, secretId?: number) => ({
+export const getLocalMachineExtraVars = (values: ClusterFormModalValues, secretId?: number) => ({
   ...getCommonExtraVars(values),
   ...(values[CLUSTER_FORM_FIELD_NAMES.CLUSTER_VIP_ADDRESS]
     ? { cluster_vip: values[CLUSTER_FORM_FIELD_NAMES.CLUSTER_VIP_ADDRESS] }
@@ -200,7 +200,7 @@ const configureHosts = ({
   shouldAddHostname = false,
   isDbServers = true,
 }: {
-  values: ClusterFormValues;
+  values: ClusterFormModalValues;
   role?: string;
   shouldAddHostname?: boolean;
   isDbServers?: boolean;
@@ -242,7 +242,7 @@ const configureHosts = ({
  * @param values - The filled cluster form values.
  * @returns An object with the correct DCS request payload, or undefined if not applicable.
  */
-const constructDcsEnvs = (values: ClusterFormValues) => {
+const constructDcsEnvs = (values: ClusterFormModalValues) => {
   if (values[DCS_BLOCK_FIELD_NAMES.IS_DEPLOY_NEW_CLUSTER]) {
     if (!IS_EXPERT_MODE) {
       // Non-expert mode, only ETCD with database servers
@@ -322,7 +322,7 @@ const constructDcsEnvs = (values: ClusterFormValues) => {
  * @param values - The filled form values from the cluster creation form.
  * @returns Object containing the `balancers.hosts` map for Ansible inventory.
  */
-const constructBalancersEnvs = (values: ClusterFormValues) => {
+const constructBalancersEnvs = (values: ClusterFormModalValues) => {
   let balancerHosts = {};
 
   if (values[LOAD_BALANCERS_FIELD_NAMES.IS_HAPROXY_ENABLED]) {
@@ -370,7 +370,7 @@ const constructBalancersEnvs = (values: ClusterFormValues) => {
  * @param secretId - Optional ID of secret if exists.
  * @returns Environment variables object, including SSH key if needed and ANSIBLE_INVENTORY_JSON.
  */
-export const getLocalMachineEnvs = (values: ClusterFormValues, secretId?: number) => ({
+export const getLocalMachineEnvs = (values: ClusterFormModalValues, secretId?: number) => ({
   // If using SSH authentication and no pre-defined secret, include the SSH private key content.
   ...(values[CLUSTER_FORM_FIELD_NAMES.AUTHENTICATION_METHOD] === AUTHENTICATION_METHODS.SSH &&
   !values[CLUSTER_FORM_FIELD_NAMES.IS_USE_DEFINED_SECRET] &&
@@ -459,7 +459,7 @@ export const getLocalMachineEnvs = (values: ClusterFormValues, secretId?: number
  * @param values - The form values containing extensions data
  * @returns An object with extensions in API-ready format and extraVars for third-party extensions
  */
-const getExtensions = (values: ClusterFormValues) =>
+const getExtensions = (values: ClusterFormModalValues) =>
   Object.entries(values?.[EXTENSION_BLOCK_FIELD_NAMES.EXTENSIONS])?.reduce(
     (acc, [key, value]) => {
       if (value?.db?.length) {
@@ -490,7 +490,7 @@ const getExtensions = (values: ClusterFormValues) =>
  * @param values - The filled form values for the cluster creation form.
  * @returns An object containing the encoded base extra_vars for the cluster.
  */
-export const getBaseClusterExtraVars = (values: ClusterFormValues) => {
+export const getBaseClusterExtraVars = (values: ClusterFormModalValues) => {
   const extensions = IS_EXPERT_MODE ? getExtensions(values) : [];
 
   const baseExtraVars = {
@@ -630,7 +630,7 @@ const convertObjectValueToBase64Format = (object: Record<string, unknown>): stri
  *
  * Constructs the environment variables and extra_vars required for a cluster creation API request.
  * Environment variables are built out of secret fields, possibly encoded (base64) for GCP.
- * 
+ *
  * @param values - Form values provided by the user.
  * @param secretsInfo - An object containing secret credentials/information.
  * @param customExtraVars - Optional custom extra_vars object (usually from YAML editor).
@@ -681,7 +681,7 @@ const getRequestLocalMachineParams = (values, secretId, customExtraVars) => ({
 
 /**
  * Maps cluster form values and related information to API request fields for cluster creation.
- * 
+ *
  * This function prepares the parameters for the cluster creation API request
  * by combining form values, secret IDs, project IDs, and custom extra variables.
  * It determines the correct set of fields and formatting required based on the creation type
@@ -701,7 +701,7 @@ export const mapFormValuesToRequestFields = ({
   secretsInfo,
   customExtraVars,
 }: {
-  values: ClusterFormValues;
+  values: ClusterFormModalValues;
   secretId?: number;
   projectId: number;
   secretsInfo?: object;

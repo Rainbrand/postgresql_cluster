@@ -1,4 +1,4 @@
-import { ClusterFormValues } from '@features/cluster-secret-modal/model/types.ts';
+import { ClusterFormModalValues } from '@features/cluster-secret-modal/model/types.ts';
 import {
   getBaseClusterExtraVars,
   getCloudProviderExtraVars,
@@ -11,7 +11,7 @@ import { PROVIDERS } from '@shared/config/constants.ts';
  * Function converts passed form values into correct YAML "key:value" format with mapped keys.
  * @param values - Filled form values.
  */
-export const mapFormValuesToYamlEditor = (values: ClusterFormValues) => ({
+export const mapFormValuesToYamlEditor = (values: ClusterFormModalValues) => ({
   ...getBaseClusterExtraVars(values),
   ...(values[CLUSTER_FORM_FIELD_NAMES.PROVIDER]?.code !== PROVIDERS.LOCAL
     ? { ...getCloudProviderExtraVars(values) }

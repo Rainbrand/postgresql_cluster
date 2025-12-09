@@ -21,7 +21,7 @@ import { Stack } from '@mui/material';
 import ClusterSecretModal from '@features/cluster-secret-modal';
 import { toast } from 'react-toastify';
 import { IS_EXPERT_MODE } from '@shared/model/constants.ts';
-import { ClusterFormValues } from '@features/cluster-secret-modal/model/types.ts';
+import { ClusterFormModalValues } from '@features/cluster-secret-modal/model/types.ts';
 import { ResponseSecretInfo, useGetSecretsQuery, usePostSecretsMutation } from '@shared/api/api/secrets.ts';
 import { getSecretBodyFromValues } from '@entities/secret-form-block/lib/functions.ts';
 import { SECRET_MODAL_CONTENT_FORM_FIELD_NAMES } from '@entities/secret-form-block/model/constants.ts';
@@ -63,13 +63,13 @@ const ClusterForm: FC<ClusterFormProps> = ({
   const [addSecretTrigger, addSecretTriggerState] = usePostSecretsMutation();
   const [addClusterTrigger, addClusterTriggerState] = usePostClustersMutation();
 
-  const { formState, handleSubmit } = useFormContext<ClusterFormValues>();
+  const { formState, handleSubmit } = useFormContext<ClusterFormModalValues>();
 
   const watchProvider = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.PROVIDER });
 
   const secrets = useGetSecretsQuery({ type: watchProvider?.code, projectId: Number(currentProject) });
 
-  const submitLocalCluster = async (values: ClusterFormValues) => {
+  const submitLocalCluster = async (values: ClusterFormModalValues) => {
     if (values[CLUSTER_FORM_FIELD_NAMES.AUTHENTICATION_IS_SAVE_TO_CONSOLE] && !createSecretResultRef?.current) {
       createSecretResultRef.current = await addSecretTrigger({
         requestSecretCreate: {
@@ -98,7 +98,7 @@ const ClusterForm: FC<ClusterFormProps> = ({
     }).unwrap();
   };
 
-  const submitCloudCluster = async (values: ClusterFormValues) => {
+  const submitCloudCluster = async (values: ClusterFormModalValues) => {
     await addClusterTrigger({
       requestClusterCreate: mapFormValuesToRequestFields({
         values,
@@ -108,7 +108,7 @@ const ClusterForm: FC<ClusterFormProps> = ({
     }).unwrap();
   };
 
-  const onSubmit = async (values: ClusterFormValues) => {
+  const onSubmit = async (values: ClusterFormModalValues) => {
     try {
       if (values[CLUSTER_FORM_FIELD_NAMES.PROVIDER].code === PROVIDERS.LOCAL) await submitLocalCluster(values);
       else await submitCloudCluster(values);

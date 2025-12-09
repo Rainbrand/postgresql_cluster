@@ -3,7 +3,6 @@ import ClusterForm from '@widgets/cluster-form';
 import ClusterSummary from '@widgets/cluster-summary';
 import { Box, Divider, Stack, Tab } from '@mui/material';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
-import { ClusterFormValues } from '@features/cluster-secret-modal/model/types.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ClusterFormSchema } from '@widgets/cluster-form/model/validation.ts';
 import {
@@ -21,6 +20,7 @@ import { STORAGE_BLOCK_FIELDS } from '@entities/cluster/storage-block/model/cons
 import { IS_EXPERT_MODE, IS_YAML_ENABLED } from '@shared/model/constants.ts';
 import YamlEditorForm from '@widgets/yaml-editor-form/ui';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { ClusterFormValues } from '@/widgets/cluster-form/model/types';
 
 /**
  * AddCluster is the main page component used for creating and configuring a new cluster.
@@ -69,9 +69,9 @@ const AddCluster: FC = () => {
         methods.reset((values) => ({
           ...values,
           [CLUSTER_FORM_FIELD_NAMES.PROVIDER]: providers[0],
-          [CLUSTER_FORM_FIELD_NAMES.REGION]: providers[0]?.cloud_regions?.[0]?.code,
-          [CLUSTER_FORM_FIELD_NAMES.REGION_CONFIG]: providers[0]?.cloud_regions?.[0]?.datacenters?.[0],
-          [CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG]: providers[0]?.instance_types?.small?.[0],
+          [CLUSTER_FORM_FIELD_NAMES.REGION]: providers[0]?.cloud_regions?.[0]?.code ?? '',
+          [CLUSTER_FORM_FIELD_NAMES.REGION_CONFIG]: providers[0]?.cloud_regions?.[0]?.datacenters?.[0] ?? {},
+          [CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG]: providers[0]?.instance_types?.small?.[0] ?? {},
           [CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION]: postgresVersions.data?.data?.at(-1)?.major_version ?? 18, // fallback to 18 if no versions are available
           [CLUSTER_FORM_FIELD_NAMES.ENVIRONMENT_ID]: environments.data?.data?.[0]?.id ?? 0, // fallback to 0 if no environments are available
           [CLUSTER_FORM_FIELD_NAMES.CLUSTER_NAME]: clusterName.data?.name ?? 'postgres-cluster',
