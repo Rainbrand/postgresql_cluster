@@ -72,8 +72,8 @@ const AddCluster: FC = () => {
           [CLUSTER_FORM_FIELD_NAMES.REGION]: providers[0]?.cloud_regions?.[0]?.code,
           [CLUSTER_FORM_FIELD_NAMES.REGION_CONFIG]: providers[0]?.cloud_regions?.[0]?.datacenters?.[0],
           [CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG]: providers[0]?.instance_types?.small?.[0],
-          [CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION]: postgresVersions.data?.data?.at(-1)?.major_version ?? 18,  // fallback to 18 if no versions are available
-          [CLUSTER_FORM_FIELD_NAMES.ENVIRONMENT_ID]: environments.data?.data?.[0]?.id ?? 0,  // fallback to 0 if no environments are available
+          [CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION]: postgresVersions.data?.data?.at(-1)?.major_version ?? 18, // fallback to 18 if no versions are available
+          [CLUSTER_FORM_FIELD_NAMES.ENVIRONMENT_ID]: environments.data?.data?.[0]?.id ?? 0, // fallback to 0 if no environments are available
           [CLUSTER_FORM_FIELD_NAMES.CLUSTER_NAME]: clusterName.data?.name ?? 'postgres-cluster',
           ...(IS_EXPERT_MODE
             ? {
@@ -103,7 +103,9 @@ const AddCluster: FC = () => {
     </Stack>
   );
 
-  if (isResetting || deployments.isFetching || postgresVersions.isFetching || environments.isFetching) {
+  const { isLoading } = methods.formState;
+
+  if (isLoading || isResetting || deployments.isFetching || postgresVersions.isFetching || environments.isFetching) {
     return <Spinner />;
   }
 

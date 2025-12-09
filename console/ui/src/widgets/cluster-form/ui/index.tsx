@@ -1,4 +1,4 @@
-import React, { lazy, useRef } from 'react';
+import { FC, lazy, useRef } from 'react';
 import ClusterFormProvidersBlock from '@entities/cluster/providers-block';
 import ClusterFormEnvironmentBlock from '@entities/cluster/environment-block';
 import ClusterNameBox from '@entities/cluster/cluster-name-block';
@@ -38,7 +38,18 @@ const KernelParametersBlock = lazy(() => import('@entities/cluster/expert-mode/k
 const AdditionalSettingsBlock = lazy(() => import('@entities/cluster/expert-mode/additional-settings-block/ui'));
 const DataDirectoryBlock = lazy(() => import('@entities/cluster/expert-mode/data-directory-block/ui'));
 
-const ClusterForm: React.FC<ClusterFormProps> = ({
+/**
+ * ClusterForm is a form component for creating a new cluster, supporting both local and cloud providers.
+ *
+ * @component
+ * @param props - The properties for the ClusterForm component.
+ * @param deploymentsData - The list of available provider deployments.
+ * @param environmentsData - The list of environment options for the cluster.
+ * @param postgresVersionsData - The list of available PostgreSQL versions.
+ *
+ * @returns {JSX.Element} The rendered cluster creation form.
+ */
+const ClusterForm: FC<ClusterFormProps> = ({
   deploymentsData = [],
   environmentsData = [],
   postgresVersionsData = [],
@@ -52,7 +63,7 @@ const ClusterForm: React.FC<ClusterFormProps> = ({
   const [addSecretTrigger, addSecretTriggerState] = usePostSecretsMutation();
   const [addClusterTrigger, addClusterTriggerState] = usePostClustersMutation();
 
-  const { formState, handleSubmit } = useFormContext();
+  const { formState, handleSubmit } = useFormContext<ClusterFormValues>();
 
   const watchProvider = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.PROVIDER });
 
