@@ -1,0 +1,41 @@
+---
+name: "Frontend Codestyle"
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set TERM environment variable
+        run: echo "TERM=xterm" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: console/ui
+        run: yarn install --immutable
+
+      - name: Run ESLint
+        working-directory: console/ui
+        run: yarn lint
+
+      - name: Run TypeScript type check
+        working-directory: console/ui
+        run: yarn tsc --noEmit
