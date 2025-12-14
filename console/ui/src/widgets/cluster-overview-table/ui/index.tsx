@@ -4,7 +4,7 @@ import { MRT_ColumnDef, MRT_RowData, MRT_TableOptions } from 'material-react-tab
 import { ClusterOverviewTableProps } from '@widgets/cluster-overview-table/model/types.ts';
 import {
   CLUSTER_OVERVIEW_TABLE_COLUMN_NAMES,
-  clusterOverviewTableColumns,
+  getClusterOverviewTableColumns,
 } from '@widgets/cluster-overview-table/model/constants.ts';
 import ClustersOverviewTableButtons from '@widgets/cluster-overview-table/ui/ClustersOverviewTableButtons.tsx';
 import { useGetOverviewClusterTableData } from '@widgets/cluster-overview-table/lib/hooks.tsx';
@@ -18,7 +18,7 @@ import RowActionsMenu from '@features/row-actions-menu/ui';
 const ClusterOverviewTable: FC<ClusterOverviewTableProps> = ({ clusterName = '', items, isLoading }) => {
   const { t, i18n } = useTranslation('clusters');
 
-  const columns = useMemo<MRT_ColumnDef<ClusterInfo>[]>(() => clusterOverviewTableColumns(t), [i18n.language]);
+  const columns = useMemo<MRT_ColumnDef<ClusterInfo>[]>(() => getClusterOverviewTableColumns(t), [i18n.language]);
 
   const data = useGetOverviewClusterTableData(items);
 

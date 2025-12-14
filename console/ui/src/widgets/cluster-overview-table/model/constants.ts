@@ -16,7 +16,7 @@ export const CLUSTER_OVERVIEW_TABLE_COLUMN_NAMES = Object.freeze({
 
 const columnHelper = createMRTColumnHelper<ClusterOverviewTableValues>();
 
-export const clusterOverviewTableColumns = (t: TFunction) => [
+export const getClusterOverviewTableColumns = (t: TFunction) => [
   columnHelper.accessor(CLUSTER_OVERVIEW_TABLE_COLUMN_NAMES.NAME, {
     header: t('name', { ns: 'shared' }),
   }),
