@@ -5,7 +5,7 @@ interface ProjectSliceState {
 }
 
 const initialState: ProjectSliceState = {
-  currentProject: localStorage.getItem('currentProject') ?? '0',
+  currentProject: localStorage.getItem('currentProject') ?? '1',
 };
 
 export const projectSlice = createSlice({
