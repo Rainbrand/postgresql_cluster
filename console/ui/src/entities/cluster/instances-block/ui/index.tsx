@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import Box from '@mui/material/Box';
@@ -17,35 +17,32 @@ import CustomInstance from '@entities/cluster/instances-block/ui/CustomInstance.
 const CloudFormInstancesBlock: FC = () => {
   const { t } = useTranslation('clusters');
   const { control, setValue } = useFormContext();
-  const [instances, setInstances] = useState({});
 
   const watchInstanceType = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.INSTANCE_TYPE });
 
   const watchProvider = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.PROVIDER });
 
-  useEffect(() => {
-    const providerInstanceTypes = watchProvider?.instance_types ?? {};
-    const instanceTypes = IS_EXPERT_MODE
-      ? {
-          ...providerInstanceTypes,
-          custom: (
-            <Stack>
-              <Box marginTop={1}>
-                <CustomInstance />
-              </Box>
-            </Stack>
-          ),
-        }
-      : providerInstanceTypes;
-    setInstances(instanceTypes);
-  }, [watchProvider?.instance_types]);
+  const providerInstanceTypes = watchProvider?.instance_types ?? {};
 
-  const handleInstanceTypeChange = (onChange: (...event: any[]) => void) => (_: any, value: string) => {
+  const instances = IS_EXPERT_MODE
+    ? {
+        ...providerInstanceTypes,
+        custom: (
+          <Stack>
+            <Box marginTop={1}>
+              <CustomInstance />
+            </Box>
+          </Stack>
+        ),
+      }
+    : providerInstanceTypes;
+
+  const handleInstanceTypeChange = (onChange: (...event: unknown[]) => void) => (_: unknown, value: string) => {
     onChange(value);
     setValue(CLUSTER_FORM_FIELD_NAMES.INSTANCE_CONFIG, instances?.[value]?.[0]);
   };
 
-  const handleInstanceConfigChange = (onChange: (...event: any[]) => void, value: string) => () => {
+  const handleInstanceConfigChange = (onChange: (...event: unknown[]) => void, value: string) => () => {
     onChange(value);
   };
 

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useRef, useState, useTransition } from 'react';
+import { ChangeEvent, FC, useEffect, useState, useTransition } from 'react';
 import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
@@ -13,7 +13,10 @@ import { useWatch } from 'react-hook-form';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import SearchIcon from '@mui/icons-material/Search';
 import { ErrorBoundary } from 'react-error-boundary';
-import { EXTENSION_BLOCK_FIELD_NAMES } from '@entities/cluster/expert-mode/extensions-block/model/const.ts';
+import {
+  EXTENSION_BLOCK_FIELD_NAMES,
+  extensionIcons,
+} from '@entities/cluster/expert-mode/extensions-block/model/const.ts';
 import { filterValues } from '@entities/cluster/expert-mode/extensions-block/lib/functions.ts';
 import 'swiper/css';
 import 'swiper/css/grid';
@@ -32,21 +35,6 @@ const ExtensionsBlock: FC = () => {
   const watchPostgresVersion = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.POSTGRES_VERSION });
   const watchEnabledExtensions = useWatch({ name: EXTENSION_BLOCK_FIELD_NAMES.EXTENSIONS });
 
-  const extensionIcons = useRef<Record<string, string>>({});
-
-  useEffect(() => {
-    extensionIcons.current = Object.entries(
-      import.meta.glob('../assets/*.{png,jpg,jpeg,svg,PNG,JPEG,SVG}', {
-        eager: true,
-        query: '?url',
-        import: 'default',
-      }),
-    ).reduce((acc, [key, value]) => {
-      const iconName = key.match(/(\w*.\w*)$/gi);
-      return iconName?.[0] ? { ...acc, [iconName[0]]: value } : acc;
-    }, {});
-  }, []);
-
   const extensions = useGetDatabaseExtensionsQuery({
     postgresVersion: watchPostgresVersion,
     extensionType: 'all',
@@ -58,14 +46,14 @@ const ExtensionsBlock: FC = () => {
       const filteredExtensions = filterValues(
         searchValue,
         isShowOnlyEnabled
-          ? (extensions.data?.data?.filter((extension) => watchEnabledExtensions?.[extension?.name]?.db?.length) ?? []) // filter to pass only enabled extensions
+          ? (extensions.data?.data?.filter((extension) => watchEnabledExtensions?.[extension.name!]?.db?.length) ?? []) // filter to pass only enabled extensions
           : (extensions.data?.data ?? []),
       );
       if (extensions.data?.data) {
         setFilteredExtensions(filteredExtensions);
       }
     });
-  }, [searchValue, isShowOnlyEnabled, extensions.data]);
+  }, [searchValue, isShowOnlyEnabled, watchEnabledExtensions, extensions.data]);
 
   const handleSearchValueChange = (e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value);
 
@@ -98,7 +86,7 @@ const ExtensionsBlock: FC = () => {
             />
             <FormControlLabel
               checked={isShowOnlyEnabled}
-              onChange={(e) => setIsShowOnlyEnabled(e.target.checked)}
+              onChange={(_, checked: boolean) => setIsShowOnlyEnabled(checked)}
               control={<Checkbox />}
               label={<Typography marginRight={1}>{t('showEnabled')}</Typography>}
             />
@@ -106,7 +94,7 @@ const ExtensionsBlock: FC = () => {
           <ExtensionsSwiper
             isPending={pending}
             filteredExtensions={filteredExtensions}
-            extensionIcons={extensionIcons.current}
+            extensionIcons={extensionIcons}
           />
         </Stack>
       </Box>

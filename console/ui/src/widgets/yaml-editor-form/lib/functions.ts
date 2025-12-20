@@ -6,10 +6,10 @@ import {
 } from '@shared/lib/clusterValuesTransformFunctions.ts';
 import { CLUSTER_FORM_FIELD_NAMES } from '@widgets/cluster-form/model/constants.ts';
 import { PROVIDERS } from '@shared/config/constants.ts';
-
 import * as YAML from 'yaml';
 import { YAML_EDITOR_FORM_FIELD_NAMES } from '../model/const';
 import { YamlEditorFormValues } from '../model/types';
+
 /**
  * Function converts passed form values into correct YAML "key:value" format with mapped keys.
  * @param values - Filled form values.

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import Box from '@mui/material/Box';
@@ -18,7 +18,6 @@ import { INSTANCES_AMOUNT_BLOCK_VALUES } from '@entities/cluster/instances-amoun
 const InstancesAmountBlock: FC = () => {
   const { t } = useTranslation('clusters');
   const theme = useTheme();
-  const [isRightElementNeeded, setIsRightElementNeeded] = useState(false);
 
   const {
     control,
@@ -27,9 +26,7 @@ const InstancesAmountBlock: FC = () => {
 
   const watchProvider = useWatch({ name: CLUSTER_FORM_FIELD_NAMES.PROVIDER });
 
-  useEffect(() => {
-    setIsRightElementNeeded([PROVIDERS.AWS, PROVIDERS.GCP, PROVIDERS.AZURE].includes(watchProvider?.code));
-  }, [watchProvider]);
+  const isRightElementNeeded = [PROVIDERS.AWS, PROVIDERS.GCP, PROVIDERS.AZURE].includes(watchProvider?.code);
 
   return (
     <Box>

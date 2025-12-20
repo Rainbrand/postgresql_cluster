@@ -17,6 +17,16 @@ import { useRef } from 'react';
 import { usePostClustersMutation } from '@shared/api/api/clusters.ts';
 import { isEmpty } from 'lodash';
 
+/**
+ * useClusterFormSubmit is a custom hook that provides logic to handle the submission
+ * of a cluster form, including cluster creation and optional related secret creation.
+ * It handles both local and cloud providers based on the given form values,
+ * manages navigation after successful creation, and displays appropriate toast notifications
+ * or error handling.
+ *
+ * @param secrets - The object containing secrets data for the current project and provider.
+ * @returns Array containing the current submitting state and the submit function.
+ */
 export const useClusterFormSubmit: ({
   secrets,
 }: {
