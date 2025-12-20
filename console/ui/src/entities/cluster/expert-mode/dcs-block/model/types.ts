@@ -1,10 +1,18 @@
 import { UseFieldArrayRemove } from 'react-hook-form';
-import { DCS_BLOCK_FIELD_NAMES } from './const';
+import { DCS_BLOCK_FIELD_NAMES, DCS_TYPES } from './const';
+import { TFunction } from 'i18next';
+import { valueOf } from '@/shared/model/types';
 
 export interface DcsDatabaseBoxProps {
   index: number;
   remove?: UseFieldArrayRemove;
   fields: Record<string, string>[];
+}
+export interface getCorrectFieldsParams {
+  watchIsDeployToDcsCluster: boolean;
+  watchIsDeployToDbServers: boolean;
+  watchDcsType: valueOf<typeof DCS_TYPES>;
+  t: TFunction;
 }
 
 export interface DcsBlockFormValues {

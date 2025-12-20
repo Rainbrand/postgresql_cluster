@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -23,7 +23,6 @@ import DcsDatabaseBox from '@entities/cluster/expert-mode/dcs-block/ui/DcsDataba
 
 const DcsBlock: FC = () => {
   const { t } = useTranslation('clusters');
-  const [correctFields, setCorrectFields] = useState([]);
 
   const {
     control,
@@ -43,9 +42,7 @@ const DcsBlock: FC = () => {
 
   const removeServer = (index: number) => () => remove(index);
 
-  useEffect(() => {
-    setCorrectFields(getCorrectFields({ watchIsDeployToDcsCluster, watchIsDeployToDbServers, watchDcsType, t }));
-  }, [watchIsDeployToDcsCluster, watchIsDeployToDbServers, watchDcsType, t]);
+  const correctFields = getCorrectFields({ watchIsDeployToDcsCluster, watchIsDeployToDbServers, watchDcsType, t });
 
   return (
     <Box>

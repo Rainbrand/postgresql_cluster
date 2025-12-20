@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
 import DefaultFormButtons from '@shared/ui/default-form-buttons';
@@ -18,7 +18,7 @@ import useTheme from '@mui/system/useTheme';
 import * as YAML from 'yaml';
 import ErrorBox from '@shared/ui/error-box/ui';
 import { ErrorBoundary } from 'react-error-boundary';
-import { mapFormValuesToYamlEditor } from '@widgets/yaml-editor-form/lib/functions.ts';
+import { getParsedYamlEditorValues, mapFormValuesToYamlEditor } from '@widgets/yaml-editor-form/lib/functions.ts';
 import ClusterSecretModal from '@features/cluster-secret-modal';
 import { useClusterFormSubmit } from '@widgets/yaml-editor-form/lib/hooks.tsx';
 import { useGetSecretsQuery } from '@shared/api/api/secrets.ts';
@@ -29,13 +29,14 @@ import { yamlFormSchema } from '@widgets/yaml-editor-form/model/validation.ts';
 import { PROVIDERS } from '@shared/config/constants.ts';
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
+let didInit = false;
+
 const YamlEditorForm: FC = () => {
   const theme = useTheme();
   const { t } = useTranslation('clusters');
   const editorRef = useRef<IStandaloneCodeEditor | null>(null);
   const navigate = useNavigate();
   const currentProject = useAppSelector(selectCurrentProject);
-  const [parsedYamlEditorValues, setParsedYamlEditorValues] = useState({});
 
   const { control, handleSubmit, formState, setValue } = useForm<YamlEditorFormValues>({
     mode: 'all',
@@ -45,6 +46,8 @@ const YamlEditorForm: FC = () => {
 
   const watchUiValues = useWatch();
   const watchYamlFormValues = useWatch({ control });
+
+  const parsedYamlEditorValues = getParsedYamlEditorValues(watchYamlFormValues);
 
   const secrets = useGetSecretsQuery({
     type: parsedYamlEditorValues?.cloud_provider ?? PROVIDERS.LOCAL,
@@ -61,20 +64,15 @@ const YamlEditorForm: FC = () => {
   const cancelHandler = () => navigate(generateAbsoluteRouterPath(RouterPaths.clusters.absolutePath));
 
   useEffect(() => {
-    setValue(
-      YAML_EDITOR_FORM_FIELD_NAMES.EDITOR,
-      YAML.stringify(mapFormValuesToYamlEditor(watchUiValues), { sortMapEntries: true }),
-      { shouldValidate: true },
-    );
-  }, []);
-
-  useEffect(() => {
-    try {
-      setParsedYamlEditorValues(YAML.parse(watchYamlFormValues[YAML_EDITOR_FORM_FIELD_NAMES.EDITOR]));
-    } catch (e) {
-      console.error(e);
+    if (!didInit) {
+      setValue(
+        YAML_EDITOR_FORM_FIELD_NAMES.EDITOR,
+        YAML.stringify(mapFormValuesToYamlEditor(watchUiValues), { sortMapEntries: true }),
+        { shouldValidate: true },
+      );
+      didInit = true;
     }
-  }, [watchYamlFormValues]);
+  }, [setValue, watchUiValues]);
 
   const submitHandler = () =>
     submit({

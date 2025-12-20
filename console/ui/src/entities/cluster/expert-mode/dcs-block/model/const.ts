@@ -1,3 +1,5 @@
+import { getCorrectFieldsParams } from './types';
+
 export const DCS_BLOCK_FIELD_NAMES = Object.freeze({
   TYPE: 'type',
   IS_DEPLOY_NEW_CLUSTER: 'isDeployNewCluster',
@@ -16,7 +18,12 @@ export const DCS_DATABASES_DEFAULT_VALUES = Object.freeze({
 
 export const DCS_TYPES = Object.freeze({ ETCD: 'etcd', CONSUL: 'consul' });
 
-export const getCorrectFields = ({ watchIsDeployToDcsCluster, watchIsDeployToDbServers, watchDcsType, t }) => {
+export const getCorrectFields = ({
+  watchIsDeployToDcsCluster,
+  watchIsDeployToDbServers,
+  watchDcsType,
+  t,
+}: getCorrectFieldsParams) => {
   const fields = [];
 
   if (!watchIsDeployToDcsCluster) {
